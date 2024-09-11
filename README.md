@@ -5,11 +5,18 @@
 // Retorna a tabela de indices.
 // Essa tabela contém o mapeamento de cada palavra dizendo em quais
 // documentos essa palavra aparece.
+//
+// Algo como: map<string, set<string>>
+//                 |            |
+//                 |_ Palavra   |
+//                              |_ Conjunto de Documentos. Importante que
+//                                                         seja conjunto para não
+//                                                         haver documentos repetidos.
 
-Tabela indexador(Colecao SW, Pages pages) {
+Tabela indexador(Colecao SW, Colecao pages) {
 
-    Tabela indices
-    Tabela stopwords
+    Tabela indices   // Acho que essa Tabela pode ser uma TST
+    Tabela stopwords // Essa também
 
     for stopword in SW {
         insere(stopwords, TOLOWER(stopword), NULL) // Qualquer coisa no value
@@ -22,17 +29,15 @@ Tabela indexador(Colecao SW, Pages pages) {
 
             if (busca(stopwords, page) != NULL) continue // Ignora stopwords
 
-            Tabela docs = busca(indices, palavra)
+            Tabela docs = busca(indices, palavra) // <-- Essa tabela acho que pode ser uma RedBlackTree
 
             if (!docs) {
                 docs = new Tabela
             }
 
-            String *page = busca(docs, page)
-
-            if (!page) {
-                insere(docs, page, NULL) // Qualquer coisa no value
-            }
+            insere(docs, page, NULL) // Qualquer coisa no value
+                                     // Tem que ser garantido que na tabela nao vai ter chaves repetidas.
+                                     // Ponto importante !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             insere(indices, palavra, docs)
         }
@@ -54,18 +59,18 @@ struct Vertex {
 
 Tabela relacionamento_entre_paginas(FILE grafo.txt) {
 
-    Tabela tabela_grafo
+    Tabela vertices
 
     for line in grafo.txt {
 
         String page = read()
         int saidas = read()
 
-        Vertex v = busca(tabela_grafo, page)
+        Vertex v = busca(vertices, page)
 
         if (!vertex) {
             v = Vertex(saidas, [])
-            insere(tabela_grafo, page, v)
+            insere(vertices, page, v)
         } else {
             v->out = saidas
         }
@@ -73,19 +78,19 @@ Tabela relacionamento_entre_paginas(FILE grafo.txt) {
         for 0...saidas {
             String w = read()
 
-            Vertex adj = busca(tabela_grafo, w)
+            Vertex adj = busca(vertices, w)
 
             if (!adj) {
                 insere(adj->in, page)
             } else {
                 adj = Vertex(0, [])
                 insere(adj->in, page)
-                insere(tabela_grafo, w, adj)
+                insere(vertices, w, adj)
             }
         }
     }
 
-    return tabela_grafo
+    return vertices
 }
 ```
 
@@ -146,6 +151,8 @@ void recalculaPR(Vertex v, Tabela vertices) {
 ```cpp
 // Algoritmo para buscar documentos em comum dado uma entrada de termos
 // e uma tabela de indices.
+
+//   !!!!!!!!!!!!!!!!!! Em construção ainda. Precisa melhorar algumas coisas.
 
 Colecao documentos_relevantes(Tabela indices, Colecao Termos) {
     Tabela tabela_freqs
