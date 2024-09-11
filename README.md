@@ -43,7 +43,7 @@ Tabela indexador(Colecao SW, Pages pages) {
 ```
 
 ```cpp
-
+// Dado um grafo, armazena as relacoes entre as paginas
 
 struct Vertex {
     int out      // Numero de saidas de um vertice
