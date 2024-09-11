@@ -5,7 +5,7 @@
 
 typedef double FLOAT; /* Only change precision here */
 
-// TODO: Move to .c
+// TODO: Move this block to .c
 struct {
     List* in;          /* Vertices in */
     int   out;         /* Size of vertices out  */
