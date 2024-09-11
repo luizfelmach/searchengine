@@ -93,13 +93,14 @@ Tabela relacionamento_entre_paginas(FILE grafo.txt) {
 // Calcula o page rank para cada vertice na tabela do grafo.
 // Eh por referencia, entao quando terminar de rodar os valores estarão atualizados dentro da estrutura.
 
-void calcula_page_rank(Tabela tabela_grafo) {
+void calcula_page_rank(Colecao pages, Tabela vertices) {
 
-    int n = size(tabela_grafo)
-    Colecao grafo = traverse(tabela_grafo) // vetor par chave valor
+    int n = size(pages)
 
-    for v in grafo {
-        v->value->PRK_1 = 1/n
+    for page in pages { // Page é uma string
+        Vertex v = busca(vertices, page) // Procura o vertice associado a essa pagina
+        v->PR_K_1 = 1 / n
+        v->PR = INF // Faz com que o primeiro erro seja infinito
     }
 
     double EPS = 10e-6
@@ -107,27 +108,29 @@ void calcula_page_rank(Tabela tabela_grafo) {
     while (1) {
         double ERRO = 0
 
-        for v in grafo {
-            recalculaPR(v->value, tabela_grafo, n)
-            ERRO += abs(v->value->PR - v->value->PRK_1)
+        for page in pages {
+            Vertex v = busca(vertices, page)
+            recalculaPR(v, vertices, n)
+            ERRO += abs(v->PR - v->PRK_1)
         }
 
         ERRO /= n
 
-
         if (ERRO < EPS) break
 
-        for v in grafo {
-            v->value->PRK_1 = v->value->PR
+        for page in pages {
+            Vertex v = busca(vertices, page)
+            v->PRK_1 = v->PR
         }
     }
 }
 
-void recalculaPR(Vertex v, Tabela tabela_grafo, int n) {
+void recalculaPR(Vertex v, Tabela vertices) {
+    int n = size(vertices)
     double res = (1 - alpha) / n
 
     for w in v->in {
-        Vertex adj = busca(tabela_grafo, w)
+        Vertex adj = busca(vertices, w)
         res += adj->PR_K1 / adj->out
     }
 
