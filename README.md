@@ -40,7 +40,53 @@ Tabela indexador(Colecao SW, Pages pages) {
 
     return indices
 }
+```
 
+```cpp
+
+
+struct Vertex {
+    int out      // Numero de saidas de um vertice
+    Colecao in   // Conexoes que chegam nesse nó
+    double PR    // Page Rank atual
+    double PRK_1 // Page Rank passado
+}
+
+Tabela relacionamento_entre_paginas(FILE grafo.txt) {
+
+    Tabela relacionamento
+
+    for line in grafo {
+
+        String page = read()
+        int saidas = read()
+
+        Vertex v = busca(relacionamento, page)
+
+        if (!vertex) {
+            v = Vertex(saidas, [])
+            insere(relacionamento, page, v)
+        } else {
+            v->out = saidas
+        }
+
+        for 0...saidas {
+            String w = read()
+
+            Vertex adj = busca(relacionamento, w)
+
+            if (!adj) {
+                insere(adj->in, page)
+            } else {
+                adj = Vertex(0, [])
+                insere(adj->in, page)
+                insere(relacionamento, w, adj)
+            }
+        }
+    }
+
+    return relacionamento
+}
 
 ```
 
