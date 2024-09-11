@@ -1,9 +1,45 @@
 # searchengine
 
-Search Engine
-
 ```
 
+// Indexador
+// Retorna a tabela de indices.
+// Essa tabela contém o mapeamento de cada palavra dizendo em quais documentos essa palavra aparece.
+
+Tabela indexador(Colecao SW, Pages pages) {
+
+    Tabela indices
+    Tabela stopwords
+
+    for stopword in SW {
+        insere(stopwords, TOLOWER(stopword), NULL) // Qualquer coisa no value
+    }
+
+    for page in pages {
+        for palavra in page {
+
+            palavra = TOLOWER(palavra);
+
+            if (busca(stopwords, page) != NULL) continue // Ignora stopwords
+
+            Tabela docs = busca(indices, palavra)
+
+            if (!docs) {
+                docs = new Tabela
+            }
+
+            String *page = busca(docs, page)
+
+            if (!page) {
+                insere(docs, page, NULL) // Qualquer coisa no value
+            }
+
+            insere(indices, palavra, docs)
+        }
+    }
+
+    return indices
+}
 
 
 ```
