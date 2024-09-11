@@ -54,18 +54,18 @@ struct Vertex {
 
 Tabela relacionamento_entre_paginas(FILE grafo.txt) {
 
-    Tabela relacionamento
+    Tabela tabela_grafo
 
-    for line in grafo {
+    for line in grafo.txt {
 
         String page = read()
         int saidas = read()
 
-        Vertex v = busca(relacionamento, page)
+        Vertex v = busca(tabela_grafo, page)
 
         if (!vertex) {
             v = Vertex(saidas, [])
-            insere(relacionamento, page, v)
+            insere(tabela_grafo, page, v)
         } else {
             v->out = saidas
         }
@@ -73,19 +73,69 @@ Tabela relacionamento_entre_paginas(FILE grafo.txt) {
         for 0...saidas {
             String w = read()
 
-            Vertex adj = busca(relacionamento, w)
+            Vertex adj = busca(tabela_grafo, w)
 
             if (!adj) {
                 insere(adj->in, page)
             } else {
                 adj = Vertex(0, [])
                 insere(adj->in, page)
-                insere(relacionamento, w, adj)
+                insere(tabela_grafo, w, adj)
             }
         }
     }
 
-    return relacionamento
+    return tabela_grafo
+}
+```
+
+```cpp
+// Calcula o page rank para cada vertice na tabela do grafo.
+// Eh por referencia, entao quando terminar de rodar os valores estarão atualizados dentro da estrutura.
+
+void calcula_page_rank(Tabela tabela_grafo) {
+
+    int n = size(tabela_grafo)
+    Colecao grafo = traverse(tabela_grafo) // vetor par chave valor
+
+    for v in grafo {
+        v->value->PRK_1 = 1/n
+    }
+
+    double EPS = 10e-6
+
+    while (1) {
+        double ERRO = 0
+
+        for v in grafo {
+            recalculaPR(v->value, tabela_grafo, n)
+            ERRO += abs(v->value->PR - v->value->PRK_1)
+        }
+
+        ERRO /= n
+
+
+        if (ERRO < EPS) break
+
+        for v in grafo {
+            v->value->PRK_1 = v->value->PR
+        }
+    }
+}
+
+void recalculaPR(Vertex v, Tabela tabela_grafo, int n) {
+    double res = (1 - alpha) / n
+
+    for w in v->in {
+        Vertex adj = busca(tabela_grafo, w)
+        res += adj->PR_K1 / adj->out
+    }
+
+    res *= alpha
+
+    if (v->out == 0) res += alpha * v->PRK_1
+
+    v->PR = res
 }
 
 ```
