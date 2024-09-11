@@ -48,37 +48,26 @@ Tabela indexador(Colecao SW, Pages pages) {
 
 // Algoritmo para buscar documentos em comum dado uma entrada de termos e uma tabela de indices.
 
-struct {
-    int n                   // Quantidade de termos
-    Colecao docs_relevantes // Documentos Relevantes
-} Context;
-
-void traverse_docs_relevantes(Node n, Context ctx) {
-    String doc = key(n)
-    int freq = value(n)
-
-    if (freq == ctx.n) {
-        insere(ctx.docs_relevantes, doc)
-    }
-}
-
-
 Colecao documentos_relevantes(Tabela indices, Colecao Termos) {
-    Tabela tabela_freq
+    Tabela tabela_freqs
     Colecao docs_relevantes = []
 
-    Colecao docs = busca(indices, termos[0])
+    Tabela tabela_docs = busca(indices, termos[0])
 
-    if (!docs) return docs_relevantes
+    if (!tabela_docs) return docs_relevantes
 
-    for doc in docs {
-        insere(tabela_freq, doc, 1)
+    Colecao docs = traverse(tabela_docs); // Retorna um vetor com chave/valor
+
+    for [doc, _] in docs { // Ignora value
+        insere(tabela_freqs, doc, 1)
     }
 
     for i = 1...size(Termos) {
-        Colecao docs = busca(indices, termos[i])
+        Tabela tabela_docs = busca(indices, termos[i])
 
-        if (!docs) return docs_relevantes
+        if (!tabela_docs) return docs_relevantes
+
+        Colecao docs = traverse(tabela_docs)
 
         // Nao insere mais na tabela, so aumenta a frequencia
         for doc in docs {
@@ -87,9 +76,13 @@ Colecao documentos_relevantes(Tabela indices, Colecao Termos) {
         }
     }
 
-    Context ctx = {size(Termos), docs_relevantes}
+    Colecao freqs = traverse(tabela_freqs)
 
-    traverse(tabela_freq, traverse_docs_relevantes, ctx)
+    for [doc, freq] in freqs { // par chave valor
+        if (freq == size(Termos)) {
+            insere(docs_relevates, doc)
+        }
+    }
 
     return docs_relevante
 }
