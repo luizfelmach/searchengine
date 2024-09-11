@@ -4,6 +4,12 @@ Search Engine
 
 ```
 
+
+
+```
+
+```cpp
+
 // Algoritmo para buscar documentos em comum dado uma entrada de termos e uma tabela de indices.
 
 struct {
