@@ -1,10 +1,10 @@
 # searchengine
 
-```
-
+```cpp
 // Indexador
 // Retorna a tabela de indices.
-// Essa tabela contém o mapeamento de cada palavra dizendo em quais documentos essa palavra aparece.
+// Essa tabela contém o mapeamento de cada palavra dizendo em quais
+// documentos essa palavra aparece.
 
 Tabela indexador(Colecao SW, Pages pages) {
 
