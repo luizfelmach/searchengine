@@ -45,8 +45,8 @@ Tabela indexador(Colecao SW, Pages pages) {
 ```
 
 ```cpp
-
-// Algoritmo para buscar documentos em comum dado uma entrada de termos e uma tabela de indices.
+// Algoritmo para buscar documentos em comum dado uma entrada de termos
+// e uma tabela de indices.
 
 Colecao documentos_relevantes(Tabela indices, Colecao Termos) {
     Tabela tabela_freqs
