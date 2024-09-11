@@ -47,7 +47,6 @@ Colecao documentos_relevantes(Tabela indices, Colecao Termos) {
 
     Context ctx = {size(Termos), docs_relevantes}
 
-
     traverse(tabela_freq, traverse_docs_relevantes, ctx)
 
     return docs_relevante
