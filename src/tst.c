@@ -1,4 +1,4 @@
-#include "tst.h"
+#include "../include/tst.h"
 
 typedef char Chunk;
 

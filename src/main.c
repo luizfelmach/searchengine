@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rbtree.h"
-#include "tst.h"
+#include "../include/rbtree.h"
+#include "../include/tst.h"
 
 int *i32(int a) {
     int *b = calloc(1, sizeof(int));

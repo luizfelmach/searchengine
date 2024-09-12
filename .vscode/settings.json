@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "tst.h": "c",
+        "core.h": "c",
+        "rbtree.h": "c"
+    }
+}
