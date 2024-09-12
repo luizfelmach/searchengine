@@ -27,9 +27,12 @@ Tabela indexador(Colecao SW, Colecao pages) {
 
             palavra = TOLOWER(palavra);
 
-            if (busca(stopwords, page) != NULL) continue // Ignora stopwords
+            if (busca(stopwords, palavra) != NULL) continue // Ignora stopwords
 
             Tabela docs = busca(indices, palavra) // <-- Essa tabela acho que pode ser uma RedBlackTree
+                                                  // A redblack permite que não tenha chaves repetidas e
+                                                  // a iteração sobre o documentos é mais simples que uma tabela
+                                                  // hash e uma TST
 
             if (!docs) {
                 docs = new Tabela
@@ -54,12 +57,12 @@ struct Vertex {
     int out      // Numero de saidas de um vertice
     Colecao in   // Conexoes que chegam nesse nó
     double PR    // Page Rank atual
-    double PRK_1 // Page Rank passado
+    double PR_LAST // Page Rank passado
 }
 
 Tabela relacionamento_entre_paginas(FILE grafo.txt) {
 
-    Tabela vertices
+    Tabela vertices // Acho que essa tabela pode ser uma TST
 
     for line in grafo.txt {
 
@@ -69,7 +72,7 @@ Tabela relacionamento_entre_paginas(FILE grafo.txt) {
         Vertex v = busca(vertices, page)
 
         if (!vertex) {
-            v = Vertex(saidas, [])
+            v = Vertex(saidas, []) // Cria um vertice com saidas e nenhuma entrada para ele.
             insere(vertices, page, v)
         } else {
             v->out = saidas
@@ -81,11 +84,11 @@ Tabela relacionamento_entre_paginas(FILE grafo.txt) {
             Vertex adj = busca(vertices, w)
 
             if (!adj) {
-                insere(adj->in, page)
-            } else {
                 adj = Vertex(0, [])
                 insere(adj->in, page)
                 insere(vertices, w, adj)
+            } else {
+                insere(adj->in, page)
             }
         }
     }
@@ -104,7 +107,7 @@ void calcula_page_rank(Colecao pages, Tabela vertices) {
 
     for page in pages { // Page é uma string
         Vertex v = busca(vertices, page) // Procura o vertice associado a essa pagina
-        v->PR_K_1 = 1 / n
+        v->PR_LAST = 1 / n
         v->PR = INF // Faz com que o primeiro erro seja infinito
     }
 
@@ -115,8 +118,8 @@ void calcula_page_rank(Colecao pages, Tabela vertices) {
 
         for page in pages {
             Vertex v = busca(vertices, page)
-            recalculaPR(v, vertices, n)
-            ERRO += abs(v->PR - v->PRK_1)
+            recalculaPR(v)
+            ERRO += abs(v->PR - v->PR_LAST)
         }
 
         ERRO /= n
@@ -125,70 +128,75 @@ void calcula_page_rank(Colecao pages, Tabela vertices) {
 
         for page in pages {
             Vertex v = busca(vertices, page)
-            v->PRK_1 = v->PR
+            v->PR_LAST = v->PR
         }
     }
 }
 
-void recalculaPR(Vertex v, Tabela vertices) {
+void recalculaPR(Vertex v) {
     int n = size(vertices)
     double res = (1 - alpha) / n
 
     for w in v->in {
-        Vertex adj = busca(vertices, w)
-        res += adj->PR_K1 / adj->out
+        res += w->PR_LAST / w->out
     }
 
     res *= alpha
 
-    if (v->out == 0) res += alpha * v->PRK_1
+    if (v->out == 0) res += alpha * v->PR_LAST
 
     v->PR = res
 }
-
 ```
 
 ```cpp
 // Algoritmo para buscar documentos em comum dado uma entrada de termos
 // e uma tabela de indices.
 
-//   !!!!!!!!!!!!!!!!!! Em construção ainda. Precisa melhorar algumas coisas.
-
 Colecao documentos_relevantes(Tabela indices, Colecao Termos) {
-    Tabela tabela_freqs
+    Tabela tabela_freqs // Acho que pode ser uma RBTree
     Colecao docs_relevantes = []
 
     Tabela tabela_docs = busca(indices, termos[0])
 
     if (!tabela_docs) return docs_relevantes
 
-    Colecao docs = traverse(tabela_docs); // Retorna um vetor com chave/valor
 
-    for [doc, _] in docs { // Ignora value
-        insere(tabela_freqs, doc, 1)
+    TreeIT it = iterador(tabela_docs) // Faz a iteraçao na arvore usando uma stack
+                                      // Muito eficiente
+
+    for [doc, _] in it { // Ignora value
+        insere(tabela_freqs, doc, 1) // o 1 aqui precisa ser alocado ou fazer cast para void *
     }
+
+    free(it) // Importante desalocar o iterador
 
     for i = 1...size(Termos) {
         Tabela tabela_docs = busca(indices, termos[i])
 
         if (!tabela_docs) return docs_relevantes
 
-        Colecao docs = traverse(tabela_docs)
+        TreeIT it = iterador(tabela_docs)
 
         // Nao insere mais na tabela, so aumenta a frequencia
-        for doc in docs {
+        for [doc, _] in it {
             int * freq = busca(tabelas_freq, doc)
             if (freq != NULL) freq++;
         }
+
+        free(it)
     }
 
-    Colecao freqs = traverse(tabela_freqs)
 
-    for [doc, freq] in freqs { // par chave valor
+    TreeIT it = iterador(tabela_freqs)
+
+    for [doc, freq] in it { // par chave valor
         if (freq == size(Termos)) {
             insere(docs_relevates, doc)
         }
     }
+
+    free(it)
 
     return docs_relevante
 }
