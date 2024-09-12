@@ -9,7 +9,7 @@
 #include "trie.h"
 #include "vertex.h"
 
-void *to_lower(char *str);
+void to_lower(char *str);
 
 Trie *make_stop_words(FILE *stop_words_file);
 

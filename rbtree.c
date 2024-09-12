@@ -82,6 +82,20 @@ RBTree *rbtree_add(RBTree *rb, rbtree_cmp compare, RBKey key, RBValue value) {
     return rb;
 }
 
+RBTree *rbtree_search(RBTree *rb, rbtree_cmp compare, RBKey key) {
+    while (rb != NULL) {
+        int cmp;
+        cmp = compare(key, rb->key);
+        if (cmp < 0)
+            rb = rb->l;
+        else if (cmp > 0)
+            rb = rb->r;
+        else
+            return rb;
+    }
+    return NULL;
+}
+
 RBKey rbtree_key(RBTree *rb) {
     return rb->key;
 }
