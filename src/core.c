@@ -1,6 +1,10 @@
 #include "core.h"
 
-void to_lower(char *str);
+void to_lower(char *str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] >= 'A' && str[i] <= 'Z') str[i] = str[i] - 'A' + 'a';
+    }
+}
 
 List *get_pages(FILE *index_file) {
     return NULL;
