@@ -36,15 +36,18 @@ int main() {
 
     Trie *trie = trie_init();
 
-    trie = trie_insert(trie, "pao", (void *)1);
-    trie = trie_insert(trie, "top", (void *)1);
+    trie = trie_insert(trie, "pao", malloc(sizeof(int)));
+    trie = trie_insert(trie, "top", malloc(sizeof(int)));
+    trie = trie_insert(trie, "pedro", malloc(sizeof(int)));
+    trie = trie_insert(trie, "joao", malloc(sizeof(int)));
+    trie = trie_insert(trie, "pablo", malloc(sizeof(int)));
 
     printf("has %p\n", trie_search(trie, "pao"));
     printf("has %p\n", trie_search(trie, "top"));
     printf("has %p\n", trie_search(trie, ""));
     printf("has %p\n", trie_search(trie, "bla bla bla"));
 
-    trie_destroy(trie);
+    trie_destroy_fn(trie, free);
 
     return 0;
 }

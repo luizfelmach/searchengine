@@ -71,3 +71,12 @@ void trie_destroy(Trie* t) {
     trie_destroy(t->r);
     free(t);
 }
+
+void trie_destroy_fn(Trie* t, trie_free_fn free_fn) {
+    if (t == NULL) return;
+    trie_destroy_fn(t->l, free_fn);
+    trie_destroy_fn(t->m, free_fn);
+    trie_destroy_fn(t->r, free_fn);
+    if (t->value) free_fn(t->value);
+    free(t);
+}
