@@ -13,14 +13,9 @@
 //                                                         seja conjunto para não
 //                                                         haver documentos repetidos.
 
-Tabela indexador(Colecao SW, Colecao pages) {
+Tabela indexador(Tabela stopwords, Colecao pages) {
 
     Tabela indices   // Acho que essa Tabela pode ser uma TST
-    Tabela stopwords // Essa também
-
-    for stopword in SW {
-        insere(stopwords, TOLOWER(stopword), NULL) // Qualquer coisa no value
-    }
 
     for page in pages {
         for palavra in page {

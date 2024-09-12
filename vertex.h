@@ -21,5 +21,6 @@ FLOAT   vertex_pr(Vertex* v);
 FLOAT   vertex_pr_last(Vertex* v);
 void    vertex_set_pr(Vertex* v, FLOAT PR);
 void    vertex_set_pr_last(Vertex* v, FLOAT PR_LAST);
+void    vertex_calculate_page_rank(Vertex* v);
 
 #endif
