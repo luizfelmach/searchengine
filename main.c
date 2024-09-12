@@ -36,8 +36,8 @@ int main() {
 
     Trie *trie = trie_init();
 
-    trie = trie_insert(trie, "pao", (void *)123);
-    trie = trie_insert(trie, "top", (void *)314);
+    trie = trie_insert(trie, "pao", (void *)1);
+    trie = trie_insert(trie, "top", (void *)1);
 
     printf("has %p\n", trie_search(trie, "pao"));
     printf("has %p\n", trie_search(trie, "top"));
