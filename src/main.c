@@ -33,9 +33,10 @@ int main(int argc, char *argv[]) {
 
     Tst *tst_stop_words = make_stop_words(f_stop_words);
 
-    char *testes[] = {"Luiz", "Vitor", "Felipe", "Ana", "where", "Where"};
+    char *testes[] = {"Luiz",  "Vitor", "Felipe", "Ana",
+                      "where", "Where", "where\n"};
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
         printf("Tem %s : %s\n", testes[i],
                (tst_search(tst_stop_words, testes[i]) ? "YES" : "NO"));
     }
