@@ -13,7 +13,7 @@ void to_lower(char *str);
 
 Trie *make_stop_words(FILE *stop_words_file);
 
-RBTree *indexer(List *pages, Trie *stop_words);
+Trie *indexer(List *pages, Trie *stop_words);
 
 Trie *make_vertices(FILE *graph_file);
 
