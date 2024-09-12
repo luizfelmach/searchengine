@@ -1,26 +1,26 @@
-#include "trie.h"
+#include "tst.h"
 
 typedef char Chunk;
 
-struct trie {
-    TrieValue value;
-    Chunk     c;
-    Trie *    l, *m, *r;
+struct tst {
+    TstValue value;
+    Chunk    c;
+    Tst *    l, *m, *r;
 };
 
-Trie* trie_node_create() {
-    Trie* t = calloc(1, sizeof(Trie));
+Tst* tst_node_create() {
+    Tst* t = calloc(1, sizeof(Tst));
     return t;
 }
 
-Trie* trie_init() {
+Tst* tst_init() {
     return NULL;
 }
 
-Trie* rec_insert(Trie* t, char* key, TrieValue value, int d) {
+Tst* rec_insert(Tst* t, char* key, TstValue value, int d) {
     Chunk c = key[d];
     if (t == NULL) {
-        t    = trie_node_create();
+        t    = tst_node_create();
         t->c = c;
     }
     if (c < t->c) {
@@ -35,11 +35,11 @@ Trie* rec_insert(Trie* t, char* key, TrieValue value, int d) {
     return t;
 }
 
-Trie* trie_insert(Trie* t, char* key, TrieValue value) {
+Tst* tst_insert(Tst* t, char* key, TstValue value) {
     return rec_insert(t, key, value, 0);
 }
 
-Trie* rec_search(Trie* t, char* key, int d) {
+Tst* rec_search(Tst* t, char* key, int d) {
     if (t == NULL) {
         return NULL;
     }
@@ -55,7 +55,7 @@ Trie* rec_search(Trie* t, char* key, int d) {
     }
 }
 
-TrieValue trie_search(Trie* t, char* key) {
+TstValue tst_search(Tst* t, char* key) {
     t = rec_search(t, key, 0);
     if (t == NULL) {
         return NULL;
@@ -64,19 +64,19 @@ TrieValue trie_search(Trie* t, char* key) {
     }
 }
 
-void trie_destroy(Trie* t) {
+void tst_destroy(Tst* t) {
     if (t == NULL) return;
-    trie_destroy(t->l);
-    trie_destroy(t->m);
-    trie_destroy(t->r);
+    tst_destroy(t->l);
+    tst_destroy(t->m);
+    tst_destroy(t->r);
     free(t);
 }
 
-void trie_destroy_fn(Trie* t, trie_free_fn free_fn) {
+void tst_destroy_fn(Tst* t, tst_free_fn free_fn) {
     if (t == NULL) return;
-    trie_destroy_fn(t->l, free_fn);
-    trie_destroy_fn(t->m, free_fn);
-    trie_destroy_fn(t->r, free_fn);
+    tst_destroy_fn(t->l, free_fn);
+    tst_destroy_fn(t->m, free_fn);
+    tst_destroy_fn(t->r, free_fn);
     if (t->value) free_fn(t->value);
     free(t);
 }

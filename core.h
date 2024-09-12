@@ -6,18 +6,18 @@
 
 #include "list.h"
 #include "rbtree.h"
-#include "trie.h"
+#include "tst.h"
 #include "vertex.h"
 
 void to_lower(char *str);
 
-Trie *make_stop_words(FILE *stop_words_file);
+Tst *make_stop_words(FILE *stop_words_file);
 
-Trie *indexer(List *pages, Trie *stop_words);
+Tst *indexer(List *pages, Tst *stop_words);
 
-Trie *make_vertices(FILE *graph_file);
+Tst *make_vertices(FILE *graph_file);
 
-void eval_page_rank(List *pages, Trie *vertices);
+void eval_page_rank(List *pages, Tst *vertices);
 
 List *filter_pages_by_term(List *pages, List *terms);
 

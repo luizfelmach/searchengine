@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "rbtree.h"
-#include "trie.h"
+#include "tst.h"
 
 int *i32(int a) {
     int *b = calloc(1, sizeof(int));
@@ -34,20 +34,20 @@ int main() {
     rbtree_destroy(tree);
     rbiterator_destroy(it);
 
-    Trie *trie = trie_init();
+    Tst *tst = tst_init();
 
-    trie = trie_insert(trie, "pao", malloc(sizeof(int)));
-    trie = trie_insert(trie, "top", malloc(sizeof(int)));
-    trie = trie_insert(trie, "pedro", malloc(sizeof(int)));
-    trie = trie_insert(trie, "joao", malloc(sizeof(int)));
-    trie = trie_insert(trie, "pablo", malloc(sizeof(int)));
+    tst = tst_insert(tst, "pao", malloc(sizeof(int)));
+    tst = tst_insert(tst, "top", malloc(sizeof(int)));
+    tst = tst_insert(tst, "pedro", malloc(sizeof(int)));
+    tst = tst_insert(tst, "joao", malloc(sizeof(int)));
+    tst = tst_insert(tst, "pablo", malloc(sizeof(int)));
 
-    printf("has %p\n", trie_search(trie, "pao"));
-    printf("has %p\n", trie_search(trie, "top"));
-    printf("has %p\n", trie_search(trie, ""));
-    printf("has %p\n", trie_search(trie, "bla bla bla"));
+    printf("has %p\n", tst_search(tst, "pao"));
+    printf("has %p\n", tst_search(tst, "top"));
+    printf("has %p\n", tst_search(tst, ""));
+    printf("has %p\n", tst_search(tst, "bla bla bla"));
 
-    trie_destroy_fn(trie, free);
+    tst_destroy_fn(tst, free);
 
     return 0;
 }
