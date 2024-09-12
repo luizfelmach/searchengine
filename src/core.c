@@ -2,7 +2,13 @@
 
 void to_lower(char *str);
 
-Tst *make_vertices(FILE *graph_file);
+List *get_pages(FILE *index_file) {
+    return NULL;
+}
+
+Tst *make_vertices(FILE *graph_file) {
+    return NULL;
+}
 
 Tst *indexer(List *pages, Tst *stop_words);
 

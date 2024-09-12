@@ -33,6 +33,17 @@ void to_lower(char *str);
  *
  * @note
  */
+List *get_pages(FILE *index_file);
+
+/**
+ * @brief
+ *
+ * @param
+ *
+ * @return
+ *
+ * @note
+ */
 Tst *make_vertices(FILE *graph_file);
 
 /**

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "core.h"
+#include "list.h"
 #include "rbtree.h"
 #include "tst.h"
 
@@ -31,7 +32,9 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    Tst *tst_stop_words = make_stop_words(f_stop_words);
+    List *pages          = get_pages(f_index);
+    Tst  *tst_stop_words = make_stop_words(f_stop_words);
+    Tst  *tst_vertices   = make_vertices(f_graph);
 
     char *testes[] = {"Luiz",  "Vitor", "Felipe", "Ana",
                       "where", "Where", "where\n"};
