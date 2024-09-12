@@ -1,4 +1,4 @@
-FLAGS = -g -c -Wall
+FLAGS = -g -c -Wall -Iinclude
 COMPILED = bin
 
 all: src/main.c include/core.h include/list.h include/rbtree.h include/tst.h
@@ -7,7 +7,7 @@ all: src/main.c include/core.h include/list.h include/rbtree.h include/tst.h
 	@gcc $(FLAGS) src/core.c -o $(COMPILED)/core.o
 	@gcc $(FLAGS) src/rbtree.c -o $(COMPILED)/rbtree.o
 	@gcc $(FLAGS) src/tst.c -o $(COMPILED)/tst.o
-	@gcc -o trab3 $(COMPILED)/main.o $(COMPILED)/core.o $(COMPILED)/rbtree.o $(COMPILED)/tst.o
+	@gcc -Iinclude -o trab3 $(COMPILED)/main.o $(COMPILED)/core.o $(COMPILED)/rbtree.o $(COMPILED)/tst.o
 
 clean:
 	@rm -f $(COMPILED)/*.o

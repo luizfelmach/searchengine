@@ -1,4 +1,4 @@
-#include "../include/core.h"
+#include "core.h"
 
 void to_lower(char *str);
 

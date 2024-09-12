@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/core.h"
-#include "../include/rbtree.h"
-#include "../include/tst.h"
+#include "core.h"
+#include "rbtree.h"
+#include "tst.h"
 
 int main(int argc, char *argv[]) {
     if (argc <= 1) {
