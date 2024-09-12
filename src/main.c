@@ -70,24 +70,26 @@ int main (int argc, char *argv[])
         return 1;
     } 
 
-    // char* index = make_file_name (argv[1], INDEX);
-    // free (index);
+    // // char* index = make_file_name (argv[1], INDEX);
+    // // free (index);
 
-    // char* graph = make_file_name (argv[1], GRAPH);
-    // free (graph);
+    // // char* graph = make_file_name (argv[1], GRAPH);
+    // // free (graph);
 
 
-    // FILE* f_stop_words = fopen ("in/stopwords.txt", "r"); // change to dynamic
+    // // FILE* f_stop_words = fopen ("in/stopwords.txt", "r"); // change to dynamic
 
-    // if (f_stop_words == NULL)
-    // {
-    //     printf ("SHIT\n");
-    //     return 1;
-    // } 
-    // Tst* tst_stop_words = make_stop_words(f_stop_words);
-    // tst_destroy_fn(tst_stop_words, free);
+    // // if (f_stop_words == NULL)
+    // // {
+    // //     printf ("SHIT\n");
+    // //     return 1;
+    // // } 
 
-    // fclose (f_stop_words);
+    Tst* tst_stop_words = make_stop_words(f_stop_words);
+    tst_destroy_fn(tst_stop_words, free);
+
+    fclose (f_stop_words);
+    free (stop_words);
 
     return 0;
 }

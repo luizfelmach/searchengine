@@ -19,7 +19,8 @@ Tst *make_stop_words(FILE *stop_words_file)
         stop_words = tst_insert(stop_words, line, malloc(sizeof(int)));
         printf ("%d - stop word added!\n", i);
     }
-        
+
+    free(line);
     
     return stop_words;
 }
