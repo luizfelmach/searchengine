@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "rbtree.h"
+#include "trie.h"
 
 int *i32(int a) {
     int *b = calloc(1, sizeof(int));
@@ -19,7 +20,7 @@ int main() {
 
     printf("INICIO: %p\n", tree);
 
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 100; i++) {
         tree = rbtree_add(tree, i32_cmp, i32(i), NULL);
     }
 
@@ -32,6 +33,18 @@ int main() {
 
     rbtree_destroy(tree);
     rbiterator_destroy(it);
+
+    Trie *trie = trie_init();
+
+    trie = trie_insert(trie, "pao", (void *)123);
+    trie = trie_insert(trie, "top", (void *)314);
+
+    printf("has %p\n", trie_search(trie, "pao"));
+    printf("has %p\n", trie_search(trie, "top"));
+    printf("has %p\n", trie_search(trie, ""));
+    printf("has %p\n", trie_search(trie, "bla bla bla"));
+
+    trie_destroy(trie);
 
     return 0;
 }

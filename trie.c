@@ -1,9 +1,11 @@
 #include "trie.h"
 
+typedef char Chunk;
+
 struct trie {
-    int   val;
-    Chunk c;
-    Trie *l, *m, *r;
+    TrieValue value;
+    Chunk     c;
+    Trie *    l, *m, *r;
 };
 
 Trie* trie_node_create() {
@@ -11,29 +13,33 @@ Trie* trie_node_create() {
     return t;
 }
 
-Trie* rec_insert(Trie* t, String key, int val, int d) {
+Trie* trie_init() {
+    return NULL;
+}
+
+Trie* rec_insert(Trie* t, char* key, TrieValue value, int d) {
     Chunk c = key[d];
     if (t == NULL) {
         t    = trie_node_create();
         t->c = c;
     }
     if (c < t->c) {
-        t->l = rec_insert(t->l, key, val, d);
+        t->l = rec_insert(t->l, key, value, d);
     } else if (c > t->c) {
-        t->r = rec_insert(t->r, key, val, d);
-    } else if (d < string_cl(key) - 1) {
-        t->m = rec_insert(t->m, key, val, d + 1);
+        t->r = rec_insert(t->r, key, value, d);
+    } else if (d < strlen(key) - 1) {
+        t->m = rec_insert(t->m, key, value, d + 1);
     } else {
-        t->val = val;
+        t->value = value;
     }
     return t;
 }
 
-Trie* trie_insert(Trie* t, String key, int val) {
-    return rec_insert(t, key, val, 0);
+Trie* trie_insert(Trie* t, char* key, TrieValue value) {
+    return rec_insert(t, key, value, 0);
 }
 
-Trie* rec_search(Trie* t, String key, int d) {
+Trie* rec_search(Trie* t, char* key, int d) {
     if (t == NULL) {
         return NULL;
     }
@@ -42,18 +48,26 @@ Trie* rec_search(Trie* t, String key, int d) {
         return rec_search(t->l, key, d);
     } else if (c > t->c) {
         return rec_search(t->r, key, d);
-    } else if (d < string_cl(key) - 1) {
+    } else if (d < strlen(key) - 1) {
         return rec_search(t->m, key, d + 1);
     } else {
         return t;
     }
 }
 
-int trie_search(Trie* t, String key) {
+TrieValue trie_search(Trie* t, char* key) {
     t = rec_search(t, key, 0);
     if (t == NULL) {
-        return -1;
+        return NULL;
     } else {
-        return t->val;
+        return t->value;
     }
+}
+
+void trie_destroy(Trie* t) {
+    if (t == NULL) return;
+    trie_destroy(t->l);
+    trie_destroy(t->m);
+    trie_destroy(t->r);
+    free(t);
 }
