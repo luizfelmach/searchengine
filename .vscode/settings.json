@@ -2,6 +2,7 @@
     "files.associations": {
         "tst.h": "c",
         "core.h": "c",
-        "rbtree.h": "c"
+        "rbtree.h": "c",
+        "vertex.h": "c"
     }
 }
