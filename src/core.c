@@ -1,4 +1,4 @@
-#include "core.h"
+#include "../include/core.h"
 
 void to_lower(char *str) {
     for (int i = 0; i < strlen(str); i++) {
@@ -16,19 +16,33 @@ Tst *make_vertices(FILE *graph_file) {
 
 Tst *indexer(List *pages, Tst *stop_words);
 
-Tst *make_stop_words(FILE *stop_words_file) {
+Tst *make_stop_words(FILE *stop_words_file) 
+{
     Tst   *stop_words = tst_init();
     char  *line       = NULL;
     size_t len        = 0;
+    size_t read = 0;
 
-    while (getline(&line, &len, stop_words_file) != -1) {
+    while ((read = getline(&line, &len, stop_words_file)) != -1) {
         // Não importa muito o valor associado porque so vai ser usado para
         // checar persistencia
+        
+        //line = strtok(line, "\n");
+        //printf ("%s", line);
+
+        if (line[read - 1] == '\n') {
+            printf (">%s<\n", line);
+            line[read - 1] = '\0';  // Substitui '\n' por '\0'
+            //line = (char*)realloc(line, (read-1)* sizeof(char));
+            printf (">>%s<<\n", line);
+        }
+
         stop_words = tst_insert(stop_words, line, (void *)0x1);
-    }
+
+        // printf("AFTER %s : %s\n\n\n", line, (tst_search(stop_words, line) ? "YES" : "NO"));
+    } 
 
     free(line);
-
     return stop_words;
 }
 
