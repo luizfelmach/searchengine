@@ -7,7 +7,8 @@ all: src/main.c include/core.h include/list.h include/rbtree.h include/tst.h
 	@gcc $(FLAGS) src/core.c -o $(COMPILED)/core.o
 	@gcc $(FLAGS) src/rbtree.c -o $(COMPILED)/rbtree.o
 	@gcc $(FLAGS) src/tst.c -o $(COMPILED)/tst.o
-	@gcc -Iinclude -o trab3 $(COMPILED)/main.o $(COMPILED)/core.o $(COMPILED)/rbtree.o $(COMPILED)/tst.o
+	@gcc $(FLAGS) src/list.c -o $(COMPILED)/list.o
+	@gcc -Iinclude -o trab3 $(COMPILED)/main.o $(COMPILED)/core.o $(COMPILED)/rbtree.o $(COMPILED)/tst.o $(COMPILED)/list.o
 
 clean:
 	@rm -f $(COMPILED)/*.o

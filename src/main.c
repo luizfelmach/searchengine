@@ -45,7 +45,9 @@ int main(int argc, char *argv[]) {
                (tst_search(tst_stop_words, testes[i]) ? "YES" : "NO"));
     }
 
+    for (List *i = pages; i != NULL; i = list_next(i)) free(list_item(i));
     tst_destroy(tst_stop_words);
+    list_destroy(pages);
 
     fclose(f_index);
     fclose(f_stop_words);
