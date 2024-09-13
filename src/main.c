@@ -7,8 +7,7 @@
 #include "rbtree.h"
 #include "tst.h"
 
-int main(int argc, char *argv[]) 
-{
+int main(int argc, char *argv[]) {
     if (argc <= 1) {
         printf("usage: %s <directory>\n", argv[0]);
         return EXIT_FAILURE;
@@ -37,13 +36,14 @@ int main(int argc, char *argv[])
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
 
-    char *testes[] = {"Luiz",  "Vitor", "Felipe", "Ana",
-                      "where", "Where", "where\n", "of", "of\n", "no", "no\n", "against", "against\n"};
+    char *testes[] = {"Luiz",  "Vitor",   "Felipe",   "Ana",  "where",
+                      "Where", "where\n", "of",       "of\n", "no",
+                      "no\n",  "against", "against\n"};
 
-    // for (int i = 0; i < 13; i++) {
-    //     printf("Tem %s : %s\n", testes[i],
-    //            (tst_search(tst_stop_words, testes[i]) ? "YES" : "NO"));
-    // }
+    for (int i = 0; i < 13; i++) {
+        printf("Tem %s : %s\n", testes[i],
+               (tst_search(tst_stop_words, testes[i]) ? "YES" : "NO"));
+    }
 
     tst_destroy(tst_stop_words);
 
