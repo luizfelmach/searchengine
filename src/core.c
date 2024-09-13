@@ -23,7 +23,7 @@ Tst *make_stop_words(FILE *stop_words_file) {
     size_t read       = 0;
 
     while ((read = getline(&line, &len, stop_words_file)) != -1) {
-        line[strlen(line) - 1] = '\0';  // Substitui '\n' por '\0'
+        line[read - 1] = '\0';  // Substitui '\n' por '\0'
         to_lower(line);
         stop_words = tst_insert(stop_words, line, (void *)0x1);
     }
