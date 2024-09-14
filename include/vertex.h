@@ -3,18 +3,11 @@
 
 #include "list.h"
 
-typedef double FLOAT; /* Only change precision here */
-
-// TODO: Move this block to .c
-struct {
-    List* in;          /* Vertices in */
-    int   out;         /* Size of vertices out  */
-    FLOAT PR, PR_LAST; /* Page Rank */
-} vertex;
-
+typedef double        FLOAT; /* Only change precision here */
 typedef struct vertex Vertex;
 
 Vertex* vertex_init(int out);
+void    vertex_set_out(Vertex* v, int out);
 List*   vertex_list_in(Vertex* v);
 List*   vertex_add_in(Vertex* v, Vertex* w);
 FLOAT   vertex_pr(Vertex* v);
