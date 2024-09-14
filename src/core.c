@@ -7,17 +7,13 @@ void to_lower(char *str) {
 }
 
 List *get_pages(FILE *index_file) {
-    List  *pages = list_init();
-    char  *line  = NULL;
-    size_t len   = 0;
-    size_t read  = 0;
+    List *pages = list_init();
+    char *line;
 
-    while ((read = getline(&line, &len, index_file)) != -1) {
-        if (line[read - 1] == '\n') line[read - 1] = '\0';
-        pages = list_push_front(pages, strdup(line));
+    while ((line = read_lim(index_file, '\n')) != NULL) {
+        pages = list_push_front(pages, line);
     }
 
-    free(line);
     return pages;
 }
 
@@ -28,18 +24,15 @@ Tst *make_vertices(FILE *graph_file) {
 Tst *indexer(List *pages, Tst *stop_words);
 
 Tst *make_stop_words(FILE *stop_words_file) {
-    Tst   *stop_words = tst_init();
-    char  *line       = NULL;
-    size_t len        = 0;
-    size_t read       = 0;
+    Tst  *stop_words = tst_init();
+    char *line;
 
-    while ((read = getline(&line, &len, stop_words_file)) != -1) {
-        if (line[read - 1] == '\n') line[read - 1] = '\0';
+    while ((line = read_lim(stop_words_file, '\n')) != NULL) {
         to_lower(line);
         stop_words = tst_insert(stop_words, line, (void *)0x1);
+        free(line);
     }
 
-    free(line);
     return stop_words;
 }
 

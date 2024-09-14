@@ -34,7 +34,10 @@ int main(int argc, char *argv[]) {
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
 
-    for (List *i = pages; i != NULL; i = list_next(i)) free(list_item(i));
+    for (List *i = pages; i != NULL; i = list_next(i)) {
+        free(list_item(i));
+    }
+
     tst_destroy(tst_stop_words);
     list_destroy(pages);
 
