@@ -21,8 +21,63 @@ List *get_pages(FILE *index_file) {
     return pages;
 }
 
+void removeBarraN(char *str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] == '\n') str[i] = '\0';
+    }
+}
+
 Tst *make_vertices(FILE *graph_file) {
-    return NULL;
+    Tst   *vertices = tst_init();
+    char  *line     = NULL;
+    size_t len      = 0;
+
+    while (getline(&line, &len, graph_file) != -1) {
+        char *token = strtok(line, " ");
+        char *key   = strdup(token);
+        free(key);
+
+        token   = strtok(NULL, " ");
+        int out = atoi(token);
+
+        // Handle the first file in the line (parent)
+        Vertex *parent = (Vertex *)tst_search(vertices, key);
+        if (parent != NULL) {
+            vertex_set_out(parent, out);
+        } else {
+            parent   = vertex_init(out);
+            vertices = tst_insert(vertices, key, parent);
+        }
+
+        //printf("%d\n", vertex_out(parent));
+
+        // Handle the rest of the files in the line (childrens)
+        for (int i = 0; i < out; i++) {
+            
+            token = strtok(NULL, " ");
+
+            if (i == out-1)
+            {
+                token[strlen(token) - 1] = '\0';
+            }
+
+            //if (token[strlen(token) - 1] == '\n')
+            //    token[strlen(token) - 1] = 'B';
+            printf("Key: '%s'\n", token);
+
+            Vertex *children = (Vertex *)tst_search(vertices, token);
+            if (children != NULL) {
+                vertex_add_in(children, parent);
+            } else {
+                children = vertex_init(0);
+                vertices = tst_insert(vertices, token, (void *)children);
+                vertex_add_in(children, parent);
+            }
+        }
+    }
+    free(line);
+
+    return vertices;
 }
 
 Tst *indexer(List *pages, Tst *stop_words);

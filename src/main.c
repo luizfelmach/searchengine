@@ -36,14 +36,33 @@ int main(int argc, char *argv[]) {
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
 
-    char *testes[] = {"Luiz",  "Vitor",   "Felipe",   "Ana",  "where",
-                      "Where", "where\n", "of",       "of\n", "no",
-                      "no\n",  "against", "against\n"};
+    //char *testes[] = {"Luiz",  "Vitor",   "Felipe",   "Ana",  "where",
+                      //"Where", "where\n", "of",       "of\n", "no",
+                      //"no\n",  "against", "against\n"};
 
-    for (int i = 0; i < 13; i++) {
-        printf("Tem %s : %s\n", testes[i],
-               (tst_search(tst_stop_words, testes[i]) ? "YES" : "NO"));
-    }
+    //for (int i = 0; i < 13; i++) {
+    //    printf("Tem %s : %s\n", testes[i],
+    //          (tst_search(tst_stop_words, testes[i]) ? "YES" : "NO"));
+    //}
+
+    // TESTE DO GRAFO
+    //printf("TESTE DO GRAFO:\n");
+
+    //for (List *i = pages; i != NULL; i = list_next(i)) {
+    //    printf("Vertex: %s\n", (char *)list_item(i));
+
+    //    Vertex *v = (Vertex *)tst_search(tst_vertices, list_item(i));
+
+    //    if (v == NULL) {
+    //        printf("not found\n");
+    //    } else {
+    //        printf("Out: %d\n", vertex_out(v));
+    //    }
+    //}
+
+     //for (List *j = vertex_list_in(v); j != NULL; j = list_next(j)) {
+        //    printf("In: %s\n", (char *)list_item(j));
+        //}
 
     for (List *i = pages; i != NULL; i = list_next(i)) free(list_item(i));
     tst_destroy(tst_stop_words);

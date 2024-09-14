@@ -7,12 +7,16 @@ struct vertex {
 };
 
 Vertex* vertex_init(int out) {
-    Vertex* v  = (Vertex*)malloc(sizeof(struct vertex));
+    Vertex* v  = (Vertex*)malloc(sizeof(Vertex));
     v->in      = list_init();
     v->out     = out;
     v->PR      = 0.0;
     v->PR_LAST = 0.0;
     return v;
+}
+
+int vertex_out(Vertex* v) {
+    return v->out;
 }
 
 void vertex_set_out(Vertex* v, int out) {

@@ -8,6 +8,7 @@ typedef struct vertex Vertex;
 
 Vertex* vertex_init(int out);
 void    vertex_set_out(Vertex* v, int out);
+int     vertex_out(Vertex* v);
 List*   vertex_list_in(Vertex* v);
 List*   vertex_add_in(Vertex* v, Vertex* w);
 FLOAT   vertex_pr(Vertex* v);
