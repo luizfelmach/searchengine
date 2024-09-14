@@ -26,52 +26,37 @@ int _rbtree_cmp_(RBKey a, RBKey b) {
 }
 
 Tst *indexer(List *pages, Tst *stop_words) {
-    Tst* page_words = tst_init();
+    Tst *page_words = tst_init();
 
     for (List *i = pages; i != NULL; i = list_next(i)) {
- 
-        char* filename = make_file_name("in/pages", "/", (char*)list_item(i));
-        // printf("page: %s\n", filename);
-        FILE *f_page = fopen(filename, "r");
+        char *filename = make_file_name("in/pages", "/", list_item(i));
+        FILE *f_page   = fopen(filename, "r");
 
-        if (!f_page) {
-            printf("error: could not open page file!\n");
-            exit(EXIT_FAILURE);
+        char *line, *token;
+
+        while ((line = read_lim(f_page, '\n')) != NULL) {
+            to_lower(line);
+            token = strtok(line, " \t");
+
+            while (token != NULL) {
+                if (tst_search(stop_words, "of") != NULL) {
+                    token = strtok(NULL, " \t");
+                    continue;
+                }
+                RBTree *rbt_pages = tst_search(page_words, token);
+                if (!rbt_pages) {
+                    rbt_pages = rbtree_init();
+                }
+                rbt_pages =
+                    rbtree_add(rbt_pages, _rbtree_cmp_, list_item(i), NULL);
+                page_words = tst_insert(page_words, token, rbt_pages);
+                token      = strtok(NULL, " \t");
+            }
+            free(line);
         }
 
-        size_t len = 0;
-        char  *line = NULL;
-        char* token = NULL;
-
-        printf("before getline\n");
-        while ((getline(&line, &len, f_page)) != -1) {
-            printf("line: %s\n", line);
-            token = strtok(line, " \n\t");
-            printf("token: (%s)", token);
-
-            while(token != NULL) {
-                token[strlen(token) - 1] = '\0';
-                to_lower(token);
-                printf("token_upd: (%s)", token); // token updated
-                
-                if (tst_search(stop_words, token) != NULL) continue; // token is a stop word
-
-                RBTree* rbt_pages = tst_search(page_words, token);
-                
-                if (rbt_pages == NULL) { // token does not exist at page_words TST
-                    rbt_pages = rbtree_init();
-                    rbt_pages = rbtree_add(rbt_pages, _rbtree_cmp_, (char*)list_item(i), NULL);
-                    page_words = tst_insert(page_words, token, rbt_pages);
-                }
-                else {
-                    if (rbtree_search(rbt_pages, _rbtree_cmp_, (char*)list_item(i)) == NULL) { // token does exist at page_words TST, but current page does not exist at the token's rbt_pages RBT
-                        rbt_pages = rbtree_add(rbt_pages, _rbtree_cmp_, (char*)list_item(i), NULL);
-                    }
-                }
-
-                token = strtok(NULL, " \n\t");
-            }
-        }   
+        fclose(f_page);
+        free(filename);
     }
 
     return page_words;
