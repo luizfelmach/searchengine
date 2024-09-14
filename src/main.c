@@ -6,6 +6,7 @@
 #include "list.h"
 #include "rbtree.h"
 #include "tst.h"
+#include "util.h"
 
 int main(int argc, char *argv[]) {
     if (argc <= 1) {
