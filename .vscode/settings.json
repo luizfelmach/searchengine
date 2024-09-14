@@ -5,6 +5,8 @@
     "rbtree.h": "c",
     "vertex.h": "c",
     "stdlib.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "list.h": "c",
+    "util.h": "c"
   }
 }
