@@ -11,6 +11,7 @@
 #include "list.h"
 #include "rbtree.h"
 #include "tst.h"
+#include "util.h"
 // #include "vertex.h"
 
 /**
