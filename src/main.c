@@ -22,11 +22,12 @@ int main(int argc, char *argv[]) {
     FILE *f_stop_words = fopen(stop_words, "r");
     FILE *f_graph      = fopen(graph, "r");
 
+    free(index);
+    free(stop_words);
+    free(graph);
+
     if (!f_index || !f_stop_words || !f_graph) {
         printf("error: could not open files\n");
-        free(index);
-        free(stop_words);
-        free(graph);
         return EXIT_FAILURE;
     }
 
@@ -39,16 +40,12 @@ int main(int argc, char *argv[]) {
     }
 
     tst_destroy(tst_stop_words);
-    tst_destroy_fn(tst_vertices, vertex_destroy);
+    tst_destroy_fn(tst_vertices, (void *)vertex_destroy);
     list_destroy(pages);
 
     fclose(f_index);
     fclose(f_stop_words);
     fclose(f_graph);
-
-    free(index);
-    free(stop_words);
-    free(graph);
 
     return EXIT_SUCCESS;
 }
