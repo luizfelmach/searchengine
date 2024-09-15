@@ -48,8 +48,21 @@ void vertex_set_pr_last(Vertex* v, FLOAT PR_LAST) {
     v->PR_LAST = PR_LAST;
 }
 
-void vertex_calculate_page_rank(Vertex* v) {
-    // TODO
+void vertex_calculate_page_rank(Vertex* v, int n_pages) {
+    int n = n_pages;
+
+    FLOAT res = (FLOAT)(1 - ALPHA) / n;
+
+    FORL(w, v->in) { 
+        Vertex* adj = list_item(w);
+        res += adj->PR_LAST / adj->out; 
+    }
+
+    res *= ALPHA;
+
+    if (v->out == 0) res += ALPHA * v->PR_LAST;
+
+    v->PR = res;
 }
 
 void vertex_destroy(Vertex *v) {

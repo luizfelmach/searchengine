@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "list.h"
 #include "rbtree.h"
@@ -34,7 +35,7 @@ void to_lower(char *str);
  *
  * @note
  */
-List *get_pages(FILE *index_file);
+List *get_pages(FILE *index_file, int* n_pages);
 
 /**
  * @brief
@@ -78,7 +79,7 @@ Tst *make_stop_words(FILE *stop_words_file);
  *
  * @note
  */
-void eval_page_rank(List *pages, Tst *vertices);
+void eval_page_rank(List *pages, Tst *vertices, int n_pages);
 
 /**
  * @brief

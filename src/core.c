@@ -6,12 +6,14 @@ void to_lower(char *str) {
     }
 }
 
-List *get_pages(FILE *index_file) {
+List *get_pages(FILE *index_file, int* n_pages) {
     List *pages = list_init();
+    *n_pages = 0;
     char *line;
 
     while ((line = read_lim(index_file, '\n')) != NULL) {
         pages = list_push_front(pages, line);
+        *n_pages += 1;
     }
 
     return pages;
@@ -100,6 +102,7 @@ Tst *indexer(List *pages, Tst *stop_words) {
     return page_words;
 }
 
+
 Tst *make_stop_words(FILE *stop_words_file) {
     Tst  *stop_words = tst_init();
     char *line;
@@ -113,7 +116,36 @@ Tst *make_stop_words(FILE *stop_words_file) {
     return stop_words;
 }
 
-void eval_page_rank(List *pages, Tst *vertices);
+void eval_page_rank(List *pages, Tst *vertices, int n_pages) {
+    int n = n_pages;
+
+    FORL(page, pages) {
+        Vertex* v = tst_search(vertices, list_item(page));
+        vertex_set_pr_last(v, (FLOAT)1/n);
+        vertex_set_pr(v, 1000.0);
+    }
+
+    FLOAT EPS = 10e-6;
+
+    while(1) {
+        FLOAT ERROR = 0.0;
+
+        FORL(page, pages) {
+            Vertex* v = tst_search(vertices, list_item(page));
+            vertex_calculate_page_rank(v, n);
+            ERROR += abs(vertex_pr(v) - vertex_pr_last(v));
+        }
+
+        ERROR /= n;
+
+        if (ERROR < EPS) break;
+
+        FORL(page, pages) {
+            Vertex* v = tst_search(vertices, list_item(page));
+            vertex_set_pr_last(v, vertex_pr(v));
+        }
+    }
+}
 
 char *make_file_name(char *directory, char *path, char *file) {
     int   size   = strlen(directory) + strlen(path) + strlen(file) + 10;
