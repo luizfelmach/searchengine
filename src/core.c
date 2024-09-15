@@ -18,15 +18,14 @@ List *get_pages(FILE *index_file) {
 }
 
 Tst *make_vertices(FILE *graph_file) {
-    
-    Tst * vertices = tst_init();
-    char * line;
+    Tst  *vertices = tst_init();
+    char *line;
 
     while ((line = read_lim(graph_file, '\n')) != NULL) {
-        char * token = strtok(line, " ");
-        char * key = strdup(token);
-        token = strtok(NULL, " ");
-        int out = atoi(token);
+        char *token = strtok(line, " ");
+        char *key   = strdup(token);
+        token       = strtok(NULL, " ");
+        int out     = atoi(token);
 
         // Handle the first file in the line (parent)
         Vertex *parent = (Vertex *)tst_search(vertices, key);
