@@ -36,8 +36,20 @@ int main(int argc, char *argv[]) {
     Tst  *tst_vertices   = make_vertices(f_graph);
 
     for (List *i = pages; i != NULL; i = list_next(i)) {
-        free(list_item(i));
+        // free(list_item(i));
     }
+
+    // char* words[] = {"dune", "bouche", "february", "house"};
+
+    // for (int i = 0; i < 4; i++) {
+    //     RBTree* rbt = tst_search(tst_page_words, words[i]);
+
+    //     if (rbt != NULL) {
+    //         printf("key: (%s)\n", (char*)rbtree_key(rbt));
+    //     } 
+    //     else printf("word not found!\n");
+    // }
+
 
     tst_destroy(tst_stop_words);
     tst_destroy(tst_page_words);
