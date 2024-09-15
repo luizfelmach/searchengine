@@ -56,11 +56,11 @@ int main(int argc, char *argv[]) {
     Vertex* ve = tst_search(tst_vertices, "e.txt");
 
     printf("\n\n");
-    
+
     FORL(page, pages) {
         Vertex* v = tst_search(tst_vertices, list_item(page));
 
-        printf("%s %d\n", list_item(page), vertex_out(v));
+        printf("%s %d\n", (char*)list_item(page), vertex_out(v));
     }
 
     printf("\n\n");
