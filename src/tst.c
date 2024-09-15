@@ -17,18 +17,18 @@ Tst* tst_init() {
     return NULL;
 }
 
-Tst* rec_insert(Tst* t, char* key, TstValue value, int d) {
+Tst* tst_rec_insert(Tst* t, char* key, TstValue value, int d) {
     Chunk c = key[d];
     if (t == NULL) {
         t    = tst_node_create();
         t->c = c;
     }
     if (c < t->c) {
-        t->l = rec_insert(t->l, key, value, d);
+        t->l = tst_rec_insert(t->l, key, value, d);
     } else if (c > t->c) {
-        t->r = rec_insert(t->r, key, value, d);
+        t->r = tst_rec_insert(t->r, key, value, d);
     } else if (d < strlen(key) - 1) {
-        t->m = rec_insert(t->m, key, value, d + 1);
+        t->m = tst_rec_insert(t->m, key, value, d + 1);
     } else {
         t->value = value;
     }
@@ -36,32 +36,56 @@ Tst* rec_insert(Tst* t, char* key, TstValue value, int d) {
 }
 
 Tst* tst_insert(Tst* t, char* key, TstValue value) {
-    return rec_insert(t, key, value, 0);
+    return tst_rec_insert(t, key, value, 0);
 }
 
-Tst* rec_search(Tst* t, char* key, int d) {
+Tst* tst_rec_search(Tst* t, char* key, int d) {
     if (t == NULL) {
         return NULL;
     }
     Chunk c = key[d];
     if (c < t->c) {
-        return rec_search(t->l, key, d);
+        return tst_rec_search(t->l, key, d);
     } else if (c > t->c) {
-        return rec_search(t->r, key, d);
+        return tst_rec_search(t->r, key, d);
     } else if (d < strlen(key) - 1) {
-        return rec_search(t->m, key, d + 1);
+        return tst_rec_search(t->m, key, d + 1);
     } else {
         return t;
     }
 }
 
 TstValue tst_search(Tst* t, char* key) {
-    t = rec_search(t, key, 0);
+    t = tst_rec_search(t, key, 0);
     if (t == NULL) {
         return NULL;
     } else {
         return t->value;
     }
+}
+
+void tst_rec_keys(Tst* t, char* buffer, int d) {
+    if (t == NULL) {
+        return;
+    }
+
+    tst_rec_keys(t->l, buffer, d);
+
+    buffer[d] = t->c;
+
+    if (t->value) {
+        buffer[d + 1] = '\0';
+        printf("'%s' ", buffer);
+    }
+
+    tst_rec_keys(t->m, buffer, d + 1);
+
+    tst_rec_keys(t->r, buffer, d);
+}
+
+void tst_keys(Tst* t) {
+    char stack[1024];  // Maximum string size
+    tst_rec_keys(t, stack, 0);
 }
 
 void tst_destroy(Tst* t) {

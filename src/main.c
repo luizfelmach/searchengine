@@ -8,6 +8,10 @@
 #include "tst.h"
 #include "util.h"
 
+void debug_pages(List *pages);
+void debug_stop_words(Tst *stop_words);
+void debug_tst_vertices(Tst *vertices);
+
 int main(int argc, char *argv[]) {
     if (argc <= 1) {
         printf("usage: %s <directory>\n", argv[0]);
@@ -35,14 +39,13 @@ int main(int argc, char *argv[]) {
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
 
+    debug_pages(pages);
+    debug_stop_words(tst_stop_words);
+    debug_tst_vertices(tst_vertices);
+
     fclose(f_index);
     fclose(f_stop_words);
     fclose(f_graph);
-
-    printf("PAGES: ");
-    FORL(i, pages) {
-        printf("'%s' ", (char *)list_item(i));
-    }
 
     FORL(i, pages) free(list_item(i));
     tst_destroy(tst_stop_words);
@@ -50,4 +53,24 @@ int main(int argc, char *argv[]) {
     list_destroy(pages);
 
     return EXIT_SUCCESS;
+}
+
+void debug_pages(List *pages) {
+    printf("PAGES: [ ");
+    FORL(i, pages) {
+        printf("'%s' ", (char *)list_item(i));
+    }
+    printf("]\n\n");
+}
+
+void debug_stop_words(Tst *stop_words) {
+    printf("STOP WORDS: [ ");
+    tst_keys(stop_words);
+    printf("]\n\n");
+}
+
+void debug_tst_vertices(Tst *vertices) {
+    printf("VERTICES: [ ");
+    tst_keys(vertices);
+    printf("]\n\n");
 }

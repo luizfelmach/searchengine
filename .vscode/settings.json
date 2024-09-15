@@ -6,6 +6,7 @@
     "vertex.h": "c",
     "stdlib.h": "c",
     "stdio.h": "c",
-    "list.h": "c"
+    "list.h": "c",
+    "random": "c"
   }
 }
