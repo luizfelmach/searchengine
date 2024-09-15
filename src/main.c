@@ -36,15 +36,17 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
+
     int n_pages = 0;
     List *pages          = get_pages(f_index, &n_pages);
+    debug_pages(pages);
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
+    debug_stop_words(tst_stop_words);
+    exit(0);
     Tst  *tst_page_words = indexer(argv[1], pages, tst_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
     eval_page_rank(pages, tst_vertices, n_pages);
 
-    debug_pages(pages);
-    debug_stop_words(tst_stop_words);
     debug_tst_vertices(tst_vertices);
     debug_tst_page_words(tst_page_words);
 

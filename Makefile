@@ -18,8 +18,8 @@ clean:
 	@rm -f trab3
 
 run: trab3
-	@./trab3 in/
+	@./trab3 inputs/sample1
 
 valgrind: trab3
-	@ valgrind --leak-check=full --show-leak-kinds=all ./trab3 in/
+	@ valgrind --leak-check=full --show-leak-kinds=all ./trab3 inputs/sample1
 
