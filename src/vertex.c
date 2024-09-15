@@ -51,11 +51,11 @@ void vertex_set_pr_last(Vertex* v, FLOAT PR_LAST) {
 void vertex_calculate_page_rank(Vertex* v, int n_pages) {
     int n = n_pages;
 
-    FLOAT res = (FLOAT)(1 - ALPHA) / n;
+    FLOAT res = (FLOAT)(1.0 - ALPHA) / (FLOAT)n;
 
     FORL(w, v->in) { 
         Vertex* adj = list_item(w);
-        res += adj->PR_LAST / adj->out; 
+        res += adj->PR_LAST / (FLOAT)adj->out; 
     }
 
     res *= ALPHA;

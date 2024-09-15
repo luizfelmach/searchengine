@@ -39,17 +39,37 @@ int main(int argc, char *argv[]) {
 
     int n_pages = 0;
     List *pages          = get_pages(f_index, &n_pages);
-    debug_pages(pages);
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
-    debug_stop_words(tst_stop_words);
-    exit(0);
     Tst  *tst_page_words = indexer(argv[1], pages, tst_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
     eval_page_rank(pages, tst_vertices, n_pages);
 
+    debug_pages(pages);
+    debug_stop_words(tst_stop_words);
     debug_tst_vertices(tst_vertices);
     debug_tst_page_words(tst_page_words);
 
+    Vertex* va = tst_search(tst_vertices, "a.txt");
+    Vertex* vb = tst_search(tst_vertices, "b.txt");
+    Vertex* vc = tst_search(tst_vertices, "c.txt");
+    Vertex* vd = tst_search(tst_vertices, "d.txt");
+    Vertex* ve = tst_search(tst_vertices, "e.txt");
+
+    printf("\n\n");
+    
+    FORL(page, pages) {
+        Vertex* v = tst_search(tst_vertices, list_item(page));
+
+        printf("%s %d\n", list_item(page), vertex_out(v));
+    }
+
+    printf("\n\n");
+
+    printf("'a.txt': (%lf)\n", vertex_pr(va));
+    printf("'b.txt': (%lf)\n", vertex_pr(vb));
+    printf("'c.txt': (%lf)\n", vertex_pr(vc));
+    printf("'d.txt': (%lf)\n", vertex_pr(vd));
+    printf("'e.txt': (%lf)\n", vertex_pr(ve));
     // RBTree     *rb = tst_search(tst_page_words, "g");
     // RBIterator *it = rbiterator_init(rb);
     //

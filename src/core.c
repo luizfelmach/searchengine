@@ -121,29 +121,38 @@ void eval_page_rank(List *pages, Tst *vertices, int n_pages) {
 
     FORL(page, pages) {
         Vertex* v = tst_search(vertices, list_item(page));
-        vertex_set_pr_last(v, (FLOAT)1/n);
-        vertex_set_pr(v, 1000.0);
+        vertex_set_pr_last(v, (FLOAT)1/(FLOAT)n);
+        // printf("pr_last: %lf\n", vertex_pr_last(v));
+        // vertex_set_pr(v, 1000.0);
+
+        printf("%lf ", vertex_pr_last(v));
     }
 
-    FLOAT EPS = 10e-6;
+    printf("\n");
+
+    FLOAT EPS = 10e-10;
 
     while(1) {
         FLOAT ERROR = 0.0;
+        // printf("entrou aqui!\n");
 
         FORL(page, pages) {
             Vertex* v = tst_search(vertices, list_item(page));
             vertex_calculate_page_rank(v, n);
-            ERROR += abs(vertex_pr(v) - vertex_pr_last(v));
+            ERROR += fabs(vertex_pr(v) - vertex_pr_last(v));
+            printf("%lf ", vertex_pr(v));
+            // printf("error1: %lf\n", ERROR);
         }
+        printf("\n");
 
-        ERROR /= n;
-
-        if (ERROR < EPS) break;
+        ERROR /= (FLOAT)n;
+        // printf("error2: %lf\n", ERROR);
 
         FORL(page, pages) {
             Vertex* v = tst_search(vertices, list_item(page));
             vertex_set_pr_last(v, vertex_pr(v));
         }
+        if (ERROR < EPS) break;
     }
 }
 
