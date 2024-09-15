@@ -11,6 +11,7 @@
 void debug_pages(List *pages);
 void debug_stop_words(Tst *stop_words);
 void debug_tst_vertices(Tst *vertices);
+void debug_tst_page_words(Tst *page_words);
 
 int main(int argc, char *argv[]) {
     if (argc <= 1) {
@@ -37,11 +38,22 @@ int main(int argc, char *argv[]) {
 
     List *pages          = get_pages(f_index);
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
+    Tst  *tst_page_words = indexer(pages, tst_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
 
     debug_pages(pages);
     debug_stop_words(tst_stop_words);
     debug_tst_vertices(tst_vertices);
+    debug_tst_page_words(tst_page_words);
+
+    // RBTree     *rb = tst_search(tst_page_words, "g");
+    // RBIterator *it = rbiterator_init(rb);
+    //
+    // for (RBTree *i = rb; i != NULL; i = rbiterator_next(it)) {
+    //    printf("'%s' ", (char *)rbtree_key(i));
+    //}
+    //
+    // rbiterator_destroy(it);
 
     fclose(f_index);
     fclose(f_stop_words);
@@ -50,6 +62,7 @@ int main(int argc, char *argv[]) {
     FORL(i, pages) free(list_item(i));
     tst_destroy(tst_stop_words);
     tst_destroy_fn(tst_vertices, (void *)vertex_destroy);
+    tst_destroy_fn(tst_page_words, (void *)rbtree_destroy);
     list_destroy(pages);
 
     return EXIT_SUCCESS;
@@ -72,5 +85,11 @@ void debug_stop_words(Tst *stop_words) {
 void debug_tst_vertices(Tst *vertices) {
     printf("VERTICES: [ ");
     tst_keys(vertices);
+    printf("]\n\n");
+}
+
+void debug_tst_page_words(Tst *page_words) {
+    printf("PAGE WORDS: [ ");
+    tst_keys(page_words);
     printf("]\n\n");
 }

@@ -55,7 +55,50 @@ Tst *make_vertices(FILE *graph_file) {
     return vertices;
 }
 
-Tst *indexer(List *pages, Tst *stop_words);
+int _rbtree_cmp_(RBKey a, RBKey b) {
+    return strcmp((const char *)a, (const char *)b);
+}
+
+Tst *indexer(List *pages, Tst *stop_words) {
+    Tst *page_words = tst_init();
+
+    FORL(page, pages) {
+        // printf("%s: ", list_item(page));
+        char *filename = make_file_name("in", "/pages", list_item(page));
+        FILE *f_page   = fopen(filename, "r");
+
+        char *line;
+        while ((line = read_lim(f_page, '\n')) != NULL) {
+            to_lower(line);
+
+            FORW(word, line, " \t") {
+                if (tst_search(stop_words, word) != NULL) continue;
+
+                RBTree *rbt_pages = tst_search(page_words, word);
+
+                if (!rbt_pages) {
+                    rbt_pages = rbtree_init();
+                }
+
+                rbt_pages =
+                    rbtree_add(rbt_pages, _rbtree_cmp_, list_item(page), NULL);
+
+                page_words = tst_insert(page_words, word, rbt_pages);
+
+                // printf("(%s) ", word);
+            }
+
+            free(line);
+        }
+
+        // printf("\n\n");
+
+        fclose(f_page);
+        free(filename);
+    }
+
+    return page_words;
+}
 
 Tst *make_stop_words(FILE *stop_words_file) {
     Tst  *stop_words = tst_init();
