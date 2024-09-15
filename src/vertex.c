@@ -15,6 +15,10 @@ Vertex* vertex_init(int out) {
     return v;
 }
 
+int vertex_out(Vertex *v) {
+    return v->out;
+}
+
 void vertex_set_out(Vertex* v, int out) {
     v->out = out;
 }
@@ -46,4 +50,9 @@ void vertex_set_pr_last(Vertex* v, FLOAT PR_LAST) {
 
 void vertex_calculate_page_rank(Vertex* v) {
     // TODO
+}
+
+void vertex_destroy(Vertex *v) {
+    list_destroy(v->in);
+    free(v);
 }

@@ -8,6 +8,6 @@ char *read_lim(FILE *file, char lim) {
         free(buffer);
         return NULL;
     }
-    buffer[nread - 1] = '\0';
+    if (buffer[nread - 1] == lim) buffer[nread - 1] = '\0';
     return buffer;
 }

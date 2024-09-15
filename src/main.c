@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
     }
 
     tst_destroy(tst_stop_words);
+    tst_destroy_fn(tst_vertices, vertex_destroy);
     list_destroy(pages);
 
     fclose(f_index);

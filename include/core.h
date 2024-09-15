@@ -12,7 +12,7 @@
 #include "rbtree.h"
 #include "tst.h"
 #include "util.h"
-// #include "vertex.h"
+#include "vertex.h"
 
 /**
  * @brief

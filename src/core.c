@@ -18,7 +18,42 @@ List *get_pages(FILE *index_file) {
 }
 
 Tst *make_vertices(FILE *graph_file) {
-    return NULL;
+    
+    Tst * vertices = tst_init();
+    char * line;
+
+    while ((line = read_lim(graph_file, '\n')) != NULL) {
+        char * token = strtok(line, " ");
+        char * key = strdup(token);
+        token = strtok(NULL, " ");
+        int out = atoi(token);
+
+        // Handle the first file in the line (parent)
+        Vertex *parent = (Vertex *)tst_search(vertices, key);
+        if (parent != NULL) {
+            vertex_set_out(parent, out);
+        } else {
+            parent   = vertex_init(out);
+            vertices = tst_insert(vertices, key, parent);
+        }
+
+        // Handle child
+        FORW(file, NULL, " ") {
+            Vertex *children = (Vertex *)tst_search(vertices, file);
+            if (children != NULL) {
+                vertex_add_in(children, parent);
+            } else {
+                children = vertex_init(0);
+                vertices = tst_insert(vertices, file, children);
+                vertex_add_in(children, parent);
+            }
+        }
+
+        free(key);
+        free(line);
+    }
+
+    return vertices;
 }
 
 Tst *indexer(List *pages, Tst *stop_words);
