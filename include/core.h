@@ -57,7 +57,7 @@ Tst *make_vertices(FILE *graph_file);
  *
  * @note
  */
-Tst *indexer(List *pages, Tst *stop_words);
+Tst *indexer(char* directory, List *pages, Tst *stop_words);
 
 /**
  * @brief

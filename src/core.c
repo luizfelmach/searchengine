@@ -61,12 +61,12 @@ int _rbtree_cmp_(RBKey a, RBKey b) {
     return strcmp((const char *)a, (const char *)b);
 }
 
-Tst *indexer(List *pages, Tst *stop_words) {
+Tst *indexer(char* directory, List *pages, Tst *stop_words) {
     Tst *page_words = tst_init();
 
     FORL(page, pages) {
         // printf("%s: ", list_item(page));
-        char *filename = make_file_name("in", "/pages", list_item(page));
+        char *filename = make_file_name(directory, "/pages", list_item(page));
         FILE *f_page   = fopen(filename, "r");
 
         char *line;
