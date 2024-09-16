@@ -15,7 +15,7 @@ Vertex* vertex_init(int out) {
     return v;
 }
 
-int vertex_out(Vertex *v) {
+int vertex_out(Vertex* v) {
     return v->out;
 }
 
@@ -52,20 +52,19 @@ void vertex_calculate_page_rank(Vertex* v, int n_pages) {
     int n = n_pages;
 
     FLOAT res = (FLOAT)(1.0 - ALPHA) / (FLOAT)n;
+    FLOAT sum = 0;
 
-    FORL(w, v->in) { 
+    FORL(w, v->in) {
         Vertex* adj = list_item(w);
-        res += adj->PR_LAST / (FLOAT)adj->out; 
+        sum += adj->PR_LAST / (FLOAT)adj->out;
     }
 
-    res *= ALPHA;
-
+    res += sum * ALPHA;
     if (v->out == 0) res += ALPHA * v->PR_LAST;
-
     v->PR = res;
 }
 
-void vertex_destroy(Vertex *v) {
+void vertex_destroy(Vertex* v) {
     list_destroy(v->in);
     free(v);
 }

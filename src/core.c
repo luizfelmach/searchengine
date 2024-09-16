@@ -6,9 +6,9 @@ void to_lower(char *str) {
     }
 }
 
-List *get_pages(FILE *index_file, int* n_pages) {
+List *get_pages(FILE *index_file, int *n_pages) {
     List *pages = list_init();
-    *n_pages = 0;
+    *n_pages    = 0;
     char *line;
 
     while ((line = read_lim(index_file, '\n')) != NULL) {
@@ -61,11 +61,10 @@ int _rbtree_cmp_(RBKey a, RBKey b) {
     return strcmp((const char *)a, (const char *)b);
 }
 
-Tst *indexer(char* directory, List *pages, Tst *stop_words) {
+Tst *indexer(char *directory, List *pages, Tst *stop_words) {
     Tst *page_words = tst_init();
 
     FORL(page, pages) {
-        // printf("%s: ", list_item(page));
         char *filename = make_file_name(directory, "/pages", list_item(page));
         FILE *f_page   = fopen(filename, "r");
 
@@ -86,14 +85,10 @@ Tst *indexer(char* directory, List *pages, Tst *stop_words) {
                     rbtree_add(rbt_pages, _rbtree_cmp_, list_item(page), NULL);
 
                 page_words = tst_insert(page_words, word, rbt_pages);
-
-                // printf("(%s) ", word);
             }
 
             free(line);
         }
-
-        // printf("\n\n");
 
         fclose(f_page);
         free(filename);
@@ -101,7 +96,6 @@ Tst *indexer(char* directory, List *pages, Tst *stop_words) {
 
     return page_words;
 }
-
 
 Tst *make_stop_words(FILE *stop_words_file) {
     Tst  *stop_words = tst_init();
@@ -120,39 +114,31 @@ void eval_page_rank(List *pages, Tst *vertices, int n_pages) {
     int n = n_pages;
 
     FORL(page, pages) {
-        Vertex* v = tst_search(vertices, list_item(page));
-        vertex_set_pr_last(v, (FLOAT)1/(FLOAT)n);
-        // printf("pr_last: %lf\n", vertex_pr_last(v));
-        // vertex_set_pr(v, 1000.0);
-
-        printf("%lf ", vertex_pr_last(v));
+        Vertex *v = tst_search(vertices, list_item(page));
+        vertex_set_pr_last(v, (FLOAT)1 / (FLOAT)n);
     }
 
     printf("\n");
 
-    FLOAT EPS = 10e-10;
+    FLOAT EPS = 10e-6;
 
-    while(1) {
+    while (1) {
         FLOAT ERROR = 0.0;
-        // printf("entrou aqui!\n");
 
         FORL(page, pages) {
-            Vertex* v = tst_search(vertices, list_item(page));
+            Vertex *v = tst_search(vertices, list_item(page));
             vertex_calculate_page_rank(v, n);
             ERROR += fabs(vertex_pr(v) - vertex_pr_last(v));
-            printf("%lf ", vertex_pr(v));
-            // printf("error1: %lf\n", ERROR);
         }
-        printf("\n");
 
         ERROR /= (FLOAT)n;
-        // printf("error2: %lf\n", ERROR);
+
+        if (ERROR < EPS) break;
 
         FORL(page, pages) {
-            Vertex* v = tst_search(vertices, list_item(page));
+            Vertex *v = tst_search(vertices, list_item(page));
             vertex_set_pr_last(v, vertex_pr(v));
         }
-        if (ERROR < EPS) break;
     }
 }
 

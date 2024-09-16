@@ -36,8 +36,7 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-
-    int n_pages = 0;
+    int   n_pages        = 0;
     List *pages          = get_pages(f_index, &n_pages);
     Tst  *tst_stop_words = make_stop_words(f_stop_words);
     Tst  *tst_page_words = indexer(argv[1], pages, tst_stop_words);
@@ -49,35 +48,37 @@ int main(int argc, char *argv[]) {
     debug_tst_vertices(tst_vertices);
     debug_tst_page_words(tst_page_words);
 
-    Vertex* va = tst_search(tst_vertices, "a.txt");
-    Vertex* vb = tst_search(tst_vertices, "b.txt");
-    Vertex* vc = tst_search(tst_vertices, "c.txt");
-    Vertex* vd = tst_search(tst_vertices, "d.txt");
-    Vertex* ve = tst_search(tst_vertices, "e.txt");
+    // Vertex *va = tst_search(tst_vertices, "a.txt");
+    // Vertex *vb = tst_search(tst_vertices, "b.txt");
+    // Vertex *vc = tst_search(tst_vertices, "c.txt");
+    // Vertex *vd = tst_search(tst_vertices, "d.txt");
+    // Vertex *ve = tst_search(tst_vertices, "e.txt");
 
-    printf("\n\n");
+    // printf("\n\n");
+    // FORL(page, pages) {
+    //     Vertex *v = tst_search(tst_vertices, list_item(page));
+    //     printf("%s %d\n", (char *)list_item(page), vertex_out(v));
+    //     List *adjs = vertex_list_in(v);
+    //     FORL(adj, adjs) {
+    //         printf("%d ", vertex_out(list_item(adj)));
+    //     }
+    //     printf("\n");
+    // }
+    // printf("\n\n");
 
-    FORL(page, pages) {
-        Vertex* v = tst_search(tst_vertices, list_item(page));
-
-        printf("%s %d\n", (char*)list_item(page), vertex_out(v));
-    }
-
-    printf("\n\n");
-
-    printf("'a.txt': (%lf)\n", vertex_pr(va));
-    printf("'b.txt': (%lf)\n", vertex_pr(vb));
-    printf("'c.txt': (%lf)\n", vertex_pr(vc));
-    printf("'d.txt': (%lf)\n", vertex_pr(vd));
-    printf("'e.txt': (%lf)\n", vertex_pr(ve));
-    // RBTree     *rb = tst_search(tst_page_words, "g");
-    // RBIterator *it = rbiterator_init(rb);
+    // printf("'a.txt': (%lf)\n", vertex_pr(va));
+    // printf("'b.txt': (%lf)\n", vertex_pr(vb));
+    // printf("'c.txt': (%lf)\n", vertex_pr(vc));
+    // printf("'d.txt': (%lf)\n", vertex_pr(vd));
+    // printf("'e.txt': (%lf)\n", vertex_pr(ve));
+    //   RBTree     *rb = tst_search(tst_page_words, "g");
+    //   RBIterator *it = rbiterator_init(rb);
     //
-    // for (RBTree *i = rb; i != NULL; i = rbiterator_next(it)) {
-    //    printf("'%s' ", (char *)rbtree_key(i));
-    //}
+    //   for (RBTree *i = rb; i != NULL; i = rbiterator_next(it)) {
+    //      printf("'%s' ", (char *)rbtree_key(i));
+    //  }
     //
-    // rbiterator_destroy(it);
+    //   rbiterator_destroy(it);
 
     fclose(f_index);
     fclose(f_stop_words);
