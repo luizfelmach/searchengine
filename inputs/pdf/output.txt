@@ -1,0 +1,9 @@
+search:maca abacate 
+pages:e.txt 
+pr:0.06696016 
+search:abacate ruim 
+pages:c.txt b.txt 
+pr:0.74065937 0.09542032 
+search:liquidificador 
+pages:
+pr:

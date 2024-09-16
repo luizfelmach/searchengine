@@ -4,6 +4,8 @@
 #define STOP_WORDS_FILE "stopwords.txt"
 #define GRAPH_FILE "graph.txt"
 #define INDEX_FILE "index.txt"
+#define SEARCHES_FILE "searches.txt"
+#define SOL_FILE "output.txt"
 
 #include <math.h>
 #include <stdio.h>
