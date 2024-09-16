@@ -13,6 +13,18 @@ void debug_stop_words(Tst *stop_words);
 void debug_tst_vertices(Tst *vertices);
 void debug_tst_page_words(Tst *page_words);
 
+typedef struct {
+    FLOAT PR;
+    char *page;
+} TOSORT;
+
+int _double_cmp(const void *a, const void *b) {
+    TOSORT *aa = (TOSORT *)a;
+    TOSORT *bb = (TOSORT *)b;
+    if (aa->PR > bb->PR) return -1;
+    return 1;
+}
+
 int main(int argc, char *argv[]) {
     if (argc <= 1) {
         printf("usage: %s <directory>\n", argv[0]);
@@ -48,37 +60,39 @@ int main(int argc, char *argv[]) {
     debug_tst_vertices(tst_vertices);
     debug_tst_page_words(tst_page_words);
 
-    // Vertex *va = tst_search(tst_vertices, "a.txt");
-    // Vertex *vb = tst_search(tst_vertices, "b.txt");
-    // Vertex *vc = tst_search(tst_vertices, "c.txt");
-    // Vertex *vd = tst_search(tst_vertices, "d.txt");
-    // Vertex *ve = tst_search(tst_vertices, "e.txt");
+    int   n_terms = 2;
+    List *terms   = list_init();
+    terms         = list_push_front(terms, "abacate");
+    terms         = list_push_front(terms, "maca");
 
-    // printf("\n\n");
-    // FORL(page, pages) {
-    //     Vertex *v = tst_search(tst_vertices, list_item(page));
-    //     printf("%s %d\n", (char *)list_item(page), vertex_out(v));
-    //     List *adjs = vertex_list_in(v);
-    //     FORL(adj, adjs) {
-    //         printf("%d ", vertex_out(list_item(adj)));
-    //     }
-    //     printf("\n");
-    // }
-    // printf("\n\n");
+    int   n_filtered_pages = 0;
+    List *filtered_pages =
+        filter_pages_by_term(tst_page_words, terms, n_terms, &n_filtered_pages);
 
-    // printf("'a.txt': (%lf)\n", vertex_pr(va));
-    // printf("'b.txt': (%lf)\n", vertex_pr(vb));
-    // printf("'c.txt': (%lf)\n", vertex_pr(vc));
-    // printf("'d.txt': (%lf)\n", vertex_pr(vd));
-    // printf("'e.txt': (%lf)\n", vertex_pr(ve));
-    //   RBTree     *rb = tst_search(tst_page_words, "g");
-    //   RBIterator *it = rbiterator_init(rb);
-    //
-    //   for (RBTree *i = rb; i != NULL; i = rbiterator_next(it)) {
-    //      printf("'%s' ", (char *)rbtree_key(i));
-    //  }
-    //
-    //   rbiterator_destroy(it);
+    TOSORT *page_sort = malloc(n_filtered_pages * sizeof(TOSORT));
+
+    int i = 0;
+    FORL(p, filtered_pages) {
+        Vertex *v    = tst_search(tst_vertices, list_item(p));
+        page_sort[i] = (TOSORT){.page = list_item(p), .PR = vertex_pr(v)};
+        i += 1;
+    }
+
+    qsort(page_sort, n_filtered_pages, sizeof(TOSORT), _double_cmp);
+
+    printf("pages:");
+    for (int i = 0; i < n_filtered_pages; i++) {
+        printf("%s ", page_sort[i].page);
+    }
+    printf("\n");
+    printf("pr:");
+    for (int i = 0; i < n_filtered_pages; i++) {
+        printf("%.8lf ", page_sort[i].PR);
+    }
+
+    free(page_sort);
+    list_destroy(terms);
+    list_destroy(filtered_pages);
 
     fclose(f_index);
     fclose(f_stop_words);

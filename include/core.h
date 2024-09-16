@@ -5,9 +5,9 @@
 #define GRAPH_FILE "graph.txt"
 #define INDEX_FILE "index.txt"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include "list.h"
 #include "rbtree.h"
@@ -35,7 +35,7 @@ void to_lower(char *str);
  *
  * @note
  */
-List *get_pages(FILE *index_file, int* n_pages);
+List *get_pages(FILE *index_file, int *n_pages);
 
 /**
  * @brief
@@ -57,7 +57,7 @@ Tst *make_vertices(FILE *graph_file);
  *
  * @note
  */
-Tst *indexer(char* directory, List *pages, Tst *stop_words);
+Tst *indexer(char *directory, List *pages, Tst *stop_words);
 
 /**
  * @brief
@@ -101,6 +101,7 @@ char *make_file_name(char *directory, char *path, char *file);
  *
  * @note
  */
-List *filter_pages_by_term(List *pages, List *terms);
+List *filter_pages_by_term(Tst *page_words, List *terms, int n_terms,
+                           int *n_filtered_pages);
 
 #endif

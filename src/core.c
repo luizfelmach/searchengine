@@ -81,8 +81,10 @@ Tst *indexer(char *directory, List *pages, Tst *stop_words) {
                     rbt_pages = rbtree_init();
                 }
 
-                rbt_pages =
-                    rbtree_add(rbt_pages, _rbtree_cmp_, list_item(page), NULL);
+                if (!rbtree_search(rbt_pages, _rbtree_cmp_, list_item(page))) {
+                    rbt_pages = rbtree_add(rbt_pages, _rbtree_cmp_,
+                                           list_item(page), NULL);
+                }
 
                 page_words = tst_insert(page_words, word, rbt_pages);
             }
@@ -149,4 +151,55 @@ char *make_file_name(char *directory, char *path, char *file) {
     return string;
 }
 
-List *filter_pages_by_term(List *pages, List *terms);
+List *filter_pages_by_term(Tst *page_words, List *terms, int n_terms,
+                           int *n_filtered_pages) {
+    RBTree     *freqs  = rbtree_init();
+    List       *result = list_init();
+    RBIterator *it;
+    *n_filtered_pages = 0;
+
+    RBTree *docs = tst_search(page_words, list_item(terms));
+
+    if (!docs) return result;
+
+    it = rbiterator_init(docs);
+    for (RBTree *i = rbiterator_next(it); i != NULL; i = rbiterator_next(it)) {
+        int *f = malloc(sizeof(int));
+        *f     = 1;
+        freqs  = rbtree_add(freqs, _rbtree_cmp_, rbtree_key(i), f);
+    }
+    rbiterator_destroy(it);
+
+    FORL(term, list_next(terms)) {
+        RBTree *docs = tst_search(page_words, list_item(term));
+
+        if (!docs) return result;
+
+        it = rbiterator_init(docs);
+        for (RBTree *i = rbiterator_next(it); i != NULL;
+             i         = rbiterator_next(it)) {
+            RBTree *r = rbtree_search(freqs, _rbtree_cmp_, rbtree_key(i));
+            if (r != NULL) {
+                int *f = rbtree_value(r);
+                *f += 1;
+            }
+        }
+
+        rbiterator_destroy(it);
+    }
+
+    it = rbiterator_init(freqs);
+    for (RBTree *i = rbiterator_next(it); i != NULL; i = rbiterator_next(it)) {
+        if (*(int *)rbtree_value(i) == n_terms) {
+            result = list_push_front(result, rbtree_key(i));
+            *n_filtered_pages += 1;
+        }
+        free(rbtree_value(i));
+    }
+
+    rbtree_destroy(freqs);
+
+    rbiterator_destroy(it);
+
+    return result;
+}
