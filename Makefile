@@ -18,8 +18,14 @@ clean:
 	@rm -f trab3
 
 run: trab3
-	@./trab3 inputs/sample1
+	@./trab3 inputs/sample1 < inputs/sample1/searches.txt
+
+runpdf: trab3
+	@./trab3 inputs/pdf < inputs/pdf/searches.txt
 
 valgrind: trab3
-	@ valgrind --leak-check=full --show-leak-kinds=all ./trab3 inputs/sample1
+	@valgrind --leak-check=full --show-leak-kinds=all ./trab3 inputs/sample1 < inputs/sample1/searches.txt
+
+valgrindpdf: trab3
+	@valgrind --leak-check=full --show-leak-kinds=all ./trab3 inputs/pdf < inputs/pdf/searches.txt
 

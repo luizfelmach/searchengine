@@ -120,8 +120,6 @@ void eval_page_rank(List *pages, Tst *vertices, int n_pages) {
         vertex_set_pr_last(v, (FLOAT)1 / (FLOAT)n);
     }
 
-    printf("\n");
-
     FLOAT EPS = 10e-6;
 
     while (1) {
