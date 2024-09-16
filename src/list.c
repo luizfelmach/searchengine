@@ -29,23 +29,6 @@ List *list_push_front(List *l, ListItem item) {
     return node;
 }
 
-List *list_push_back(List *l, ListItem item) {
-    List *new_node = list_node(NULL, item);
-    
-    if (l == NULL) {
-        return new_node;
-    }
-
-    List *current = l;
-    while (current->next != NULL) {
-        current = current->next;
-    }
-
-    current->next = new_node;
-
-    return l;
-}
-
 void list_destroy(List *l) {
     while (l != NULL) {
         List *next = l->next;

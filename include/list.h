@@ -10,7 +10,6 @@ List    *list_init();
 ListItem list_item(List *l);
 List    *list_next(List *l);
 List    *list_push_front(List *l, ListItem item);
-List    *list_push_back(List *l, ListItem item);
 void     list_destroy(List *l);
 
 #endif
