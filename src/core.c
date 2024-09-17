@@ -171,10 +171,7 @@ List *filter_pages_by_term(Tst *page_words, List *terms, int n_terms,
     FORL(term, list_next(terms)) {
         RBTree *docs = tst_search(page_words, list_item(term));
 
-        if (!docs) {
-            rbtree_destroy(freqs);
-            return result;
-        }
+        if (!docs) break;
 
         it = rbiterator_init(docs);
         for (RBTree *i = rbiterator_next(it); i != NULL;
