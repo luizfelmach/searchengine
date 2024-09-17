@@ -21,6 +21,7 @@ typedef struct {
 int _double_cmp(const void *a, const void *b) {
     TOSORT *aa = (TOSORT *)a;
     TOSORT *bb = (TOSORT *)b;
+    if (aa->PR == bb->PR) return strcmp(aa->page, bb->page);
     if (aa->PR > bb->PR) return -1;
     return 1;
 }
@@ -62,18 +63,19 @@ int main(int argc, char *argv[]) {
 
     char *line;
     while ((line = read_lim(stdin, '\n')) != NULL) {
-        List *terms   = list_init();
+        List *terms = list_init();
         to_lower(line);
 
         int n_terms = 0;
         FORW(word, line, " ") {
+            if (tst_search(tst_stop_words, word) != NULL) continue;
             terms = list_push_front(terms, word);
-            n_terms+=1;
+            n_terms += 1;
         }
 
         int   n_filtered_pages = 0;
-        List *filtered_pages =
-            filter_pages_by_term(tst_page_words, terms, n_terms, &n_filtered_pages);
+        List *filtered_pages   = filter_pages_by_term(tst_page_words, terms,
+                                                      n_terms, &n_filtered_pages);
 
         TOSORT *page_sort = malloc(n_filtered_pages * sizeof(TOSORT));
 
@@ -88,7 +90,7 @@ int main(int argc, char *argv[]) {
 
         printf("search:");
         FORL(p, terms) {
-            printf("%s ", (char*)list_item(p));
+            printf("%s ", (char *)list_item(p));
         }
         printf("\n");
         printf("pages:");
