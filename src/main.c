@@ -21,9 +21,9 @@ typedef struct {
 int _double_cmp(const void *a, const void *b) {
     TOSORT *aa = (TOSORT *)a;
     TOSORT *bb = (TOSORT *)b;
-    if (aa->PR == bb->PR) return strcmp(aa->page, bb->page);
     if (aa->PR > bb->PR) return -1;
-    return 1;
+    if (aa->PR < bb->PR) return 1;
+    return strcmp(aa->page, bb->page);
 }
 
 int main(int argc, char *argv[]) {
