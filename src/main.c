@@ -64,6 +64,8 @@ int main(int argc, char *argv[]) {
     char *line;
     while ((line = read_lim(stdin, '\n')) != NULL) {
         List *terms = list_init();
+        printf("search:%s", line);
+
         to_lower(line);
 
         int n_terms = 0;
@@ -88,10 +90,6 @@ int main(int argc, char *argv[]) {
 
         qsort(page_sort, n_filtered_pages, sizeof(TOSORT), _double_cmp);
 
-        printf("search:");
-        FORL(p, terms) {
-            printf("%s ", (char *)list_item(p));
-        }
         printf("\n");
         printf("pages:");
         for (int i = 0; i < n_filtered_pages; i++) {
@@ -100,7 +98,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         printf("pr:");
         for (int i = 0; i < n_filtered_pages; i++) {
-            printf("%.8lf ", page_sort[i].PR);
+            printf("%.20lf ", page_sort[i].PR);
         }
         printf("\n");
 
