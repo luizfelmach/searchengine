@@ -55,8 +55,29 @@ Tst* tst_rec_search(Tst* t, char* key, int d) {
     }
 }
 
+Tst* tst_iter_search(Tst* t, char* key) {
+    int d = 0;
+    while (t != NULL) {
+        Chunk c = key[d];
+        if (c < t->c) {
+            t = t->l;
+        } else if (c > t->c) {
+            t = t->r;
+        } else {
+            if (d < strlen(key) - 1) {
+                t = t->m;
+                d++;
+            } else {
+                return t;
+            }
+        }
+    }
+    return NULL;
+}
+
 TstValue tst_search(Tst* t, char* key) {
-    t = tst_rec_search(t, key, 0);
+    // t = tst_rec_search(t, key, 0);
+    t = tst_iter_search(t, key);
     if (t == NULL) {
         return NULL;
     } else {
