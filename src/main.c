@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         printf("pr:");
         for (int i = 0; i < n_filtered_pages; i++) {
-            printf("%.20lf ", page_sort[i].PR);
+            printf("%.16lf ", page_sort[i].PR);
         }
         printf("\n");
 
