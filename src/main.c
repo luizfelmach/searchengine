@@ -8,11 +8,6 @@
 #include "tst.h"
 #include "util.h"
 
-void debug_pages(List *pages);
-void debug_stop_words(Tst *stop_words);
-void debug_tst_vertices(Tst *vertices);
-void debug_tst_page_words(Tst *page_words);
-
 typedef struct {
     FLOAT PR;
     char *page;
@@ -55,11 +50,6 @@ int main(int argc, char *argv[]) {
     Tst  *tst_page_words = indexer(argv[1], pages, tst_stop_words);
     Tst  *tst_vertices   = make_vertices(f_graph);
     eval_page_rank(pages, tst_vertices, n_pages);
-
-    // debug_pages(pages);
-    // debug_stop_words(tst_stop_words);
-    // debug_tst_vertices(tst_vertices);
-    // debug_tst_page_words(tst_page_words);
 
     char *line;
     while ((line = read_lim(stdin, '\n')) != NULL) {
@@ -119,30 +109,4 @@ int main(int argc, char *argv[]) {
     list_destroy(pages);
 
     return EXIT_SUCCESS;
-}
-
-void debug_pages(List *pages) {
-    printf("PAGES: [ ");
-    FORL(i, pages) {
-        printf("'%s' ", (char *)list_item(i));
-    }
-    printf("]\n\n");
-}
-
-void debug_stop_words(Tst *stop_words) {
-    printf("STOP WORDS: [ ");
-    tst_keys(stop_words);
-    printf("]\n\n");
-}
-
-void debug_tst_vertices(Tst *vertices) {
-    printf("VERTICES: [ ");
-    tst_keys(vertices);
-    printf("]\n\n");
-}
-
-void debug_tst_page_words(Tst *page_words) {
-    printf("PAGE WORDS: [ ");
-    tst_keys(page_words);
-    printf("]\n\n");
 }
