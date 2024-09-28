@@ -69,10 +69,10 @@ Tst *indexer(char *directory, List *pages, Tst *stop_words) {
         FILE *f_page   = fopen(filename, "r");
 
         char *line;
-        while ((line = read_lim(f_page, '\n')) != NULL) {
+        while ((line = read_lim(f_page, ' ')) != NULL) {
             to_lower(line);
 
-            FORW(word, line, " \t") {
+            FORW(word, line, " \t\n") {
                 if (tst_search(stop_words, word) != NULL) continue;
 
                 RBTree *rbt_pages = tst_search(page_words, word);
